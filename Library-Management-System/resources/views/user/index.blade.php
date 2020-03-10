@@ -1,11 +1,4 @@
 
-{{-- name
-username
-role
-phone
-profile_pic
-email
-password --}}
 @extends('layouts.app')
 
 @section('content')
@@ -61,3 +54,5 @@ password --}}
     </body>
 </html>
 @endsection
+
+
