@@ -44,7 +44,15 @@ class LoginController extends Controller
             return redirect('admin/users');
         }
         else {
-            return view('user.index');
+            // if($user->active == 1)
+                return view('user.index');
+            // else {
+            //     return redirect()->back()->with('message', 'inactive user');
+            // }
         }
+   }
+
+   public function username() {
+       return 'username';
    }
 }

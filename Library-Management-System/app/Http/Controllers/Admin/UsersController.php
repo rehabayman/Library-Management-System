@@ -83,7 +83,6 @@ class UsersController extends Controller
         //     'phone' => 'starts_with:011,012,010,015|digits:11',
         //     // 'role' => 'sometimes|required_without:active'
         // ]);
-        
         if($request->name !== null) {
             $user->name = $request->name;
         }
@@ -97,7 +96,13 @@ class UsersController extends Controller
             $user->phone = null;
         }
         if(isset($request->role)) {
-            $user->role = "admin"; //promote user
+            if($request->active == 0){
+                return back()->with(['message' => "Cannot Promote an Inactive User to Admin"]);
+            }
+            else {
+                $user->role = "admin"; //promote user
+            }
+
         }
         elseif (!isset($request->role)) {
             $user->role = "user"; //degrade user
