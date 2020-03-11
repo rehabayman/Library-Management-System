@@ -47,7 +47,7 @@ class LoginController extends Controller
         }
         else {
             // if($user->active == 1)
-                return view('user.index');
+                return redirect("profile/".$user->id."/edit");
             // else {
             //     return redirect()->back()->with('message', 'inactive user');
             // }
