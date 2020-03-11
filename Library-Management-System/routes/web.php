@@ -17,8 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('category', 'CategoryController');
 Route::resource('profile', 'UserController')->middleware('auth');
 
 

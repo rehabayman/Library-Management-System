@@ -4,9 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    
-    "content-hash": "92c2c57a979d6b970da5fedc5accc97f",
-
+<<<<<<< HEAD
+    "content-hash": "4d3bad8d73eb837f141ce36af0fefdc0",
+=======
+    "content-hash": "9bb0e299e385684be99c325da17dc684",
+>>>>>>> f37f074a1e51a730137758380f4483ca9a85608d
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -779,16 +781,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v7.1.0",
+            "version": "v7.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "59b97d2868ff42d11626e63c6773b41146b3eb9c"
+                "reference": "d71ba61d51aec79a0a0f907991ec215dc24b09d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/59b97d2868ff42d11626e63c6773b41146b3eb9c",
-                "reference": "59b97d2868ff42d11626e63c6773b41146b3eb9c",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/d71ba61d51aec79a0a0f907991ec215dc24b09d4",
+                "reference": "d71ba61d51aec79a0a0f907991ec215dc24b09d4",
                 "shasum": ""
             },
             "require": {
@@ -926,7 +928,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2020-03-10T14:07:01+00:00"
+            "time": "2020-03-08T16:03:46+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -1048,6 +1050,7 @@
             "time": "2020-03-03T20:16:46+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "laravelcollective/html",
             "version": "v6.1.0",
             "source": {
@@ -1116,6 +1119,8 @@
             "time": "2020-03-02T16:41:28+00:00"
         },
         {
+=======
+>>>>>>> f37f074a1e51a730137758380f4483ca9a85608d
             "name": "league/commonmark",
             "version": "1.3.1",
             "source": {
