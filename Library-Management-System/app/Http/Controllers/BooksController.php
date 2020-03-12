@@ -15,8 +15,8 @@ class BooksController extends Controller
     public function index()
     {
         //
-
-        return view("listBooks", ["data"=> Book::all()]);
+       
+        return view("listBooks", ["data"=> Book::all(),'categories' => Category::all()]);
     }
 
     /**
@@ -135,5 +135,15 @@ class BooksController extends Controller
         $book = Book::find($id);
         $book->delete();
         return redirect()->back()->with('message', 'Book has been deleted successfully!');
+    }
+    public function filterByCategory(Request $request){
+        if($request->category==="all"){
+            return redirect("/Book");
+
+        }
+      
+        $category = Category::where('id', $request->category)->first();
+         return view("listBooks",['data'=>$category->books,'categories' => Category::all()]);
+        return redirect()->back()->with('data',$category->books)->with('categories',Category::all());
     }
 }

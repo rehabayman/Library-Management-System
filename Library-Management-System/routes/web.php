@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 Route::resource('Book', 'BooksController');
+Route::get('/book/category','BooksController@filterByCategory')->name("Book.category");
 Route::resource('profile', 'UserController')->middleware('auth');
 
 
