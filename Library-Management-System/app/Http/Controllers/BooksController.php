@@ -57,8 +57,9 @@ class BooksController extends Controller
         $book->price = $request->price;
         $book->num_of_copies = $request->num_of_copies;
         $book->category_id = $request->category;
-        $book->cover = $request->cover;
-
+        $book->cover = $request->cover->store("public/images");
+        $book->cover = explode("/", $book->cover);
+        $book->cover = $book->cover[count($book->cover) - 1 ];
         $book->save();
 
         return redirect()->back()->with('message', 'Book has been added successfully!');
