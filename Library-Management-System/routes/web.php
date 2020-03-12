@@ -13,10 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/home');
 });
 
+Route::resource('Book', 'BooksController');
 Route::resource('profile', 'UserController')->middleware('auth');
 
 
@@ -33,3 +35,5 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
 });
 
 Route::put('admin/{user}/users', 'Admin\UsersController@handleActiveStatus')->name('admin.users.handleActiveStatus')->middleware('auth');
+
+Route::resource('category', 'CategoryController');

@@ -5,7 +5,13 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Edit User {{$user->name}}</div>
+                <div class="card-header">
+                <!-- <form action="admin.users.index" method="get">
+                    @csrf
+                    <button type="submit" class="btn btn-default btn-l" style="float:left;"><i class="fas fa-arrow-circle-left"></i></button>
+                </form> -->
+                    <h5 style="margin-top:0.5rem;"> Edit User {{$user->name}} </h5>
+                </div>
                 <!-- @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -15,6 +21,9 @@
                         </ul>
                     </div>
                 @endif -->
+                @if (Session::has("message"))
+                    <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get("message") }}</p>
+                @endif
                 <div class="card-body">
                     <form action="{{ route('admin.users.update', $user) }}" method="POST">
                         @csrf

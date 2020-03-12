@@ -15,12 +15,8 @@
         "laracademy/generators": "^2.3",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
-<<<<<<< HEAD
         "laravel/ui": "^2.0",
         "laravelcollective/html": "^6.1"
-=======
-        "laravel/ui": "^2.0"
->>>>>>> f37f074a1e51a730137758380f4483ca9a85608d
     },
     "require-dev": {
         "facade/ignition": "^2.0",

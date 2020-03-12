@@ -25,6 +25,7 @@ class CreateBooksTable extends Migration
             $table->date('publish_date')->nullable();	
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->string('cover')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
