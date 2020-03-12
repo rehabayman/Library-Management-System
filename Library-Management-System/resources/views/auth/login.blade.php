@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@if (!empty($notActivated))
+    Your account is blocked
+@endif
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

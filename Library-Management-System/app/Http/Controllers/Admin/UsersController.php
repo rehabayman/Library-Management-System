@@ -21,6 +21,7 @@ class UsersController extends Controller
      */
     public function index()
     {
+        $this->authorize('isAdmin',User::class);
         $users = User::where('id','<>', Auth::id())->get();
         return view('admin.users.index')->with('users', $users);
     }
@@ -65,6 +66,7 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('edit', $user);
         return view('admin.users.edit')->with('user', $user);
     }
 
@@ -77,12 +79,15 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        // $validatedData = $request->validate([
-        //     'name' => 'required',
-        //     'email' => 'required|email:rfc,dns',
-        //     'phone' => 'starts_with:011,012,010,015|digits:11',
-        //     // 'role' => 'sometimes|required_without:active'
-        // ]);
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email:rfc,dns|unique:users,email,'.$user->id,
+            'phone' => 'starts_with:011,012,010,015|digits:11',
+            'role' => 'sometimes|required_without:active'
+        ]);
+
+        $this->authorize('update', $user);
+
         if($request->name !== null) {
             $user->name = $request->name;
         }
@@ -120,20 +125,14 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('isAdmin',User::class);
         $user->delete();
         return \redirect()->route('admin.users.index');
     }
 
     public function handleActiveStatus(Request $request, User $user)
     {
-        if($user->active == 1){
-            
-            $user->active = 0;
-        }
-        else {
-            $user->active = 1;
-        }
-
+        $user->active == 1 ?  $user->active = 0 : $user->active = 1;
         $user->save();
         return \redirect()->route('admin.users.index');
     }
