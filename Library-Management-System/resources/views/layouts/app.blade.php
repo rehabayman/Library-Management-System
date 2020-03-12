@@ -59,6 +59,9 @@
                                     <a class="dropdown-item" href="{{ route('admin.users.index') }}">
                                         User Management
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('category.index') }}">
+                                        Categories
+                                    </a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

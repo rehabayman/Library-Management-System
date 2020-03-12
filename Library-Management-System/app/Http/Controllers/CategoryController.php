@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use Auth;
-use Illuminate\Validation\Rule;
-class UserController extends Controller
+use App\Category;
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-       
-       
+        return view('categories',['categories' => \App\Category::all()]);
     }
 
     /**
@@ -38,8 +34,11 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
-
+        $request->validate(['category_name'=>'required|unique:categories,category_name,NULL,id,deleted_at,NULL|regex:/^[a-zA-Z]+$/']);
+        $storeDB = new Category();
+        $storeDB->category_name=$request->category_name;
+        $storeDB->save();
+        return redirect()->route('category.index')->with('message','Category has been added successfully');
     }
 
     /**
@@ -59,13 +58,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $profile)
-    {    
-        // dd($profile->id);
-        // dd(Auth::user()->id);
-        // dd($profile->name);
-        $this->authorize('edit',$profile);       
-        return view('user.index')->with('profile' ,$profile);
+    public function edit($id)
+    {
+        return view('editCat',['category' => \App\Category::find($id)]);
+
     }
 
     /**
@@ -75,21 +71,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $profile)
+    public function update(Request $request, Category $category)
     {
-        $this->authorize('update',$profile);
-       $validateDate = $request->validate([
-            'name'=>'required',
-            'username'=>['required', Rule::unique('users')->ignore($profile)],
-            'New_Password'=>'nullable|required_with:password|confirmed|min:6',
-            'email'=>['required', Rule::unique('users')->ignore($profile)]
-            // 'profile_picture'=>'nullable|image|mimes:jpeg,png,jpg,svg|max:5048',
-        ]);
-        $profile->update($request->all());
-        // $user->name  = $request->name;
-        // $user->username=$request->username;
-        // $user->save();
-        return redirect("/home");
+       // $this->authorize('update',$categories);
+        $category->category_name=$request->category;
+        $category->save();
+        return redirect()->route('category.index');
     }
 
     /**
@@ -98,8 +85,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->route('category.index');
     }
 }
