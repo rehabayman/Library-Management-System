@@ -25,7 +25,7 @@
         @endif
         @foreach ($data as $book)
             <div class="card align-self-stretch" style="width: 18rem;">
-            <img src="{{$book->cover}}" class="card-img-top" alt="{{$book->description}}">
+            <img src="storage/images/{{$book->cover}}" class="card-img-top" alt="{{$book->description}}">
                 <div class="card-body">
                 <h3 class="card-title">{{$book->title}}</h3>
                   <p class="card-text">{{$book->description}}</p>

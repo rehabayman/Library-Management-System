@@ -71,6 +71,9 @@
                         <a href="{{ url('/home') }}">Home</a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
+                        <a class="dropdown-item" href="{{ route('category.index') }}">
+                            Categories
+                        </a>
 
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}">Register</a>
