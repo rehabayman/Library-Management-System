@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 Route::resource('Book', 'BooksController');
+Route::get('/book/category','BooksController@filterByCategory')->name("Book.category");
 Route::resource('profile', 'UserController')->middleware('auth');
 Route::post('Book/search', 'BooksController@search')->name('Book.search')->middleware('auth');
 
@@ -37,3 +38,4 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
 
 Route::put('admin/{user}/users', 'Admin\UsersController@handleActiveStatus')->name('admin.users.handleActiveStatus')->middleware('auth');
 
+Route::resource('category', 'CategoryController');

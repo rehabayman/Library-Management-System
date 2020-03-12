@@ -82,10 +82,21 @@ class UserController extends Controller
             'name'=>'required',
             'username'=>['required', Rule::unique('users')->ignore($profile)],
             'New_Password'=>'nullable|required_with:password|confirmed|min:6',
-            'email'=>['required', Rule::unique('users')->ignore($profile)]
-            // 'profile_picture'=>'nullable|image|mimes:jpeg,png,jpg,svg|max:5048',
+            'email'=>['required', Rule::unique('users')->ignore($profile)],
+            'profile_pic'=>'nullable|file|mimes:jpeg,png,jpg,svg|max:5048',
         ]);
+        if(!empty($request->profile_pic)){
+            $image = $request->file('profile_pic');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();   
+            $image->move(public_path('images'), $new_name);
+        }
         $profile->update($request->all());
+        if(!empty($request->profile_pic)){
+        $profile->profile_pic=$new_name;
+        $profile->save();
+        }
+        return back()->with('success', 'Image Uploaded Successfully');
+     
         // $user->name  = $request->name;
         // $user->username=$request->username;
         // $user->save();

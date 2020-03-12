@@ -1,5 +1,5 @@
 
-@extends('layouts.usernav')
+@extends('layouts.app')
 
 @section('content')
 <html>
@@ -16,7 +16,8 @@
                             @endforeach
                         @endif
                         <div class="card-body">                          
-                            <form action="{{url('profile')."/".Auth::user()->id}}" method="post">
+                            <form action="{{url('profile')."/".Auth::user()->id}}" method="post" enctype="multipart/form-data"
+                                >
                                 @csrf
                                 {{ method_field('put')}}   
                                 <br>                         
@@ -29,8 +30,8 @@
                                 {{ Form::label('name', 'name') }}
                                 {{ Form::text('name',$profile->name) }} 
                                 <br>
-                                {{ Form::label('profile_picture', "Profile Picture") }}
-                                {{ Form::file('profile_picture') }} 
+                                {{ Form::label('profile_pic') }}
+                                {{ Form::file('profile_pic') }} 
                                 <br>
                                 {{ Form::label('email', "email") }}
                                 {{ Form::email('email',$profile->email) }} 

@@ -33,12 +33,31 @@
     <div class="container d-flex p-2 bd-highlight flex-wrap justify-content-around align-items-stretch">
 
         @if(count($data) < 1)
-
-            <div class="container"><h1>There are no books available</h1><a href="Book/create">Create one?</a></div>
+               
+            <div class="container"><h1>There are no books available</h1><a href="/Book/create">Create one?</a></div>
         @endif
+        <div class="form-group" class="form-control">
+
+            <form method="Get" action="{{route('Book.category')}}">
+              
+                <select name="category">
+                    <option value="" selected>Choose a category</option>
+                    <option value="all" >All Category</option>
+                    @foreach ($categories as $item)
+                    <option type="submit" value="{{$item->id}}">{{$item->category_name}}</option>
+                    
+                    @endforeach
+                </select>
+                <input type="submit" class="btn btn-primary" value="Filter"> 
+            </form>
+            
+        </div>
+      
+
         @foreach ($data as $book)
+        
             <div class="card align-self-stretch" style="width: 18rem;">
-            <img src="{{$book->cover}}" class="card-img-top" alt="{{$book->description}}">
+            <img src="storage/images/{{$book->cover}}" class="card-img-top" alt="{{$book->description}}">
                 <div class="card-body">
                 <h3 class="card-title">{{$book->title}}</h3>
                   <p class="card-text">{{$book->description}}</p>

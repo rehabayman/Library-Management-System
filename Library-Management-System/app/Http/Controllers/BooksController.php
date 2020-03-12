@@ -15,8 +15,8 @@ class BooksController extends Controller
     public function index()
     {
         //
-
-        return view("listBooks", ["data"=> Book::all()]);
+       
+        return view("listBooks", ["data"=> Book::all(),'categories' => Category::all()]);
     }
 
     /**
@@ -57,8 +57,9 @@ class BooksController extends Controller
         $book->price = $request->price;
         $book->num_of_copies = $request->num_of_copies;
         $book->category_id = $request->category;
-        $book->cover = $request->cover;
-
+        $book->cover = $request->cover->store("public/images");
+        $book->cover = explode("/", $book->cover);
+        $book->cover = $book->cover[count($book->cover) - 1 ];
         $book->save();
 
         return redirect()->back()->with('message', 'Book has been added successfully!');
@@ -115,8 +116,9 @@ class BooksController extends Controller
         $book->price = $request->price;
         $book->num_of_copies = $request->num_of_copies;
         $book->category_id = $request->category;
-        $book->cover = $request->cover;
-
+        $book->cover = $request->cover->store("public/images");
+        $book->cover = explode("/", $book->cover);
+        $book->cover = $book->cover[count($book->cover) - 1 ];
         $book->save();
 
         return redirect()->back()->with('message', 'Book has been updated successfully!');
@@ -150,5 +152,15 @@ class BooksController extends Controller
             $books = Book::where($searchBy, 'like', '%'.$searchText.'%')->get();
             return view("listBooks", ["data"=> $books]);
         }
+    }
+    public function filterByCategory(Request $request){
+        if($request->category==="all"){
+            return redirect("/Book");
+
+        }
+      
+        $category = Category::where('id', $request->category)->first();
+         return view("listBooks",['data'=>$category->books,'categories' => Category::all()]);
+        return redirect()->back()->with('data',$category->books)->with('categories',Category::all());
     }
 }

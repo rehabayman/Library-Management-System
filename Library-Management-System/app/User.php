@@ -32,7 +32,7 @@ class User extends Authenticatable
     public function leaseBooks(){
         return $this->belongsToMany('App\Book', 'user_lease_books');
     }
-    protected $fillable = ['name', 'username', 'role', 'email', 'password', 'active'];
+    protected $fillable = ['name', 'username', 'role', 'email', 'password', 'active','profile_pic'];
     // protected $fillable = ['name', 'username', 'role', 'phone', 'profile_pic', 'active', 'email', 'email_verified_at', 'password', 'remember_token', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
