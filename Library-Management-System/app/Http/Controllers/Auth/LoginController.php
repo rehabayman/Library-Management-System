@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use Illuminate\Http\Request;
+
 class LoginController extends Controller
 {
     /*
@@ -37,4 +39,22 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+
+    protected function authenticated(Request $request, $user) {
+        if ($user->role === "admin" ) {
+            return redirect('admin/users');
+        }
+        else {
+            // if($user->active == 1)
+                return redirect("profile/".$user->id."/edit");
+            // else {
+            //     return redirect()->back()->with('message', 'inactive user');
+            // }
+        }
+   }
+
+   public function username() {
+       return 'username';
+   }
 }

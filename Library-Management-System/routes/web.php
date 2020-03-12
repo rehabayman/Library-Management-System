@@ -19,7 +19,19 @@ Route::get('/', function () {
 });
 
 Route::resource('Book', 'BooksController');
+Route::resource('profile', 'UserController')->middleware('auth');
+
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+// Route::resource('/admin/users', 'Admin\UsersController', ['except' => ['show', 'create', 'store']]);
+
+//This is for grouping
+Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
+    Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']])->middleware('auth');
+});
+
+Route::put('admin/{user}/users', 'Admin\UsersController@handleActiveStatus')->name('admin.users.handleActiveStatus')->middleware('auth');
