@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Auth;
 
 class UserPolicy
 {
@@ -54,7 +55,7 @@ class UserPolicy
     public function update(User $user, User $model)
     {
         //
-        return true;
+        return $user->role=='admin' || $model->id==Auth::id();
     }
 
     /**
@@ -70,7 +71,7 @@ class UserPolicy
     }
     public function edit(User $user, User $model)
     {
-        return $user->id==$model->id;
+        return $user->role=='admin' || $model->id==Auth::id();
     }
 
     /**
@@ -95,5 +96,10 @@ class UserPolicy
     public function forceDelete(User $user, User $model)
     {
         //
+    }
+
+    public function isAdmin()
+    {
+        return Auth::user()->role=='admin';
     }
 }
