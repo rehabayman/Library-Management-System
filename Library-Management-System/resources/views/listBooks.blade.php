@@ -68,7 +68,38 @@
                     @else
                         <p class="card-tex">Number Of Copies: {{$book->num_of_copies}}</p>
                     @endif
-
+                    
+        <!-- Button trigger modal -->
+        @if($book->num_of_copies >0)
+                <button class="btn btn-info" data-mytitle="{{$book->title}}" data-mydescription="{{$book->description}}" data-bookid={{$book->id}} data-toggle="modal" data-target="#edit{{$book->id}}">Lease</button>
+      <!-- Modal -->
+      <div class="modal fade" id="edit{{$book->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">{{$book->title}}</h4>
+            </div>
+            
+            <form  method="POST" action="{{route('Book.lease')}}">
+                    {{method_field('post')}}
+                    {{csrf_field()}}
+                <div class="modal-body">
+                        <input type="hidden" name="book_id" id="cat_id" value={{$book->id}}>
+                       Number of days: <input type="number" name="number_of_days" max="60" min="1"/>                   
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Lease</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>   
+    @else
+    <p class="alert alert-info">Book is not available</p>
+    @endif 
+    
                     @if(Auth::user()->role == 1)
                         <div class="container d-flex p-2 bd-highlight justify-content-around align-items-stretch">
                             <a class="btn btn-primary"href="{{route('Book.edit' , $book->id)}}">Edit</a>
@@ -82,5 +113,6 @@
                 </div>
             </div>
         @endforeach
+      
     </div>
 @endsection

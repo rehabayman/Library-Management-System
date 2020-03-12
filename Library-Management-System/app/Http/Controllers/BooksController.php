@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Book;
 use Illuminate\Http\Request;
-
+use Auth;
+use App\UserLeaseBooks;
 class BooksController extends Controller
 {
     /**
@@ -98,6 +99,7 @@ class BooksController extends Controller
      */
     public function update(Request $request, Book $book,$id)
     {
+        
         $request->validate([
             'title' => 'required|max:255',
             'author' => 'required',
@@ -154,6 +156,9 @@ class BooksController extends Controller
         }
     }
     public function filterByCategory(Request $request){
+        $request->validate([
+            'category'=>'required',
+        ]);
         if($request->category==="all"){
             return redirect("/Book");
 
@@ -162,5 +167,26 @@ class BooksController extends Controller
         $category = Category::where('id', $request->category)->first();
          return view("listBooks",['data'=>$category->books,'categories' => Category::all()]);
         return redirect()->back()->with('data',$category->books)->with('categories',Category::all());
+    }
+    public function leaseBook(Request $request){
+     
+        $request->validate([
+            'book_id' => 'required',
+            'number_of_days'=>'required',
+                   
+        ]);
+        $book = Book::find($request->book_id);
+        if($book->num_of_copies<1)
+        return back()->withErrors(["Book is out of stock"]);
+        $leaseBook = new UserLeaseBooks;
+        $leaseBook->book_id = $request->book_id;
+        $leaseBook->user_id = Auth::user()->id;
+        $leaseBook->num_of_days = $request->number_of_days;
+        $leaseBook->save();     
+        $book=Book::find($request->book_id);
+        $num_of_copies=$book->num_of_copies;
+        $book->num_of_copies=$num_of_copies-1;
+        $book->save();           
+        return redirect()->back()->with('message', 'You has leased the book');
     }
 }

@@ -19,9 +19,11 @@ Route::get('/', function () {
 });
 
 Route::resource('Book', 'BooksController');
-Route::get('/book/category','BooksController@filterByCategory')->name("Book.category");
+Route::get('/book/category','BooksController@filterByCategory')->name("Book.category")->middleware('auth');
 Route::resource('profile', 'UserController')->middleware('auth');
 Route::post('Book/search', 'BooksController@search')->name('Book.search')->middleware('auth');
+Route::post('Book/lease', 'BooksController@leaseBook')->name('Book.lease')->middleware('auth');
+
 
 
 Auth::routes();
