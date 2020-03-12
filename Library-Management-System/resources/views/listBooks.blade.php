@@ -17,6 +17,19 @@
             </div>
         @endif
     </div>
+    <div class="container" style="margin-left:23rem;">
+        <form action="{{ url('Book/search') }}" method="POST" class="form-inline">
+                @csrf
+                <!-- {{method_field('GET')}} -->
+                <label for="search_param" style="margin-right:2rem;">Search By</label>
+                <select name="search_param" class="form-control form-control-m" data-width="fit">
+                        <option value="title" class="dropdown-item" >Title</option>
+                        <option value="author" class="dropdown-item">Author</option>
+                </select>
+                <input type="text" name="search_text" class="form-control form-control-m ml-3 w-50" placeholder="Search" aria-label="Search">
+                <button type="submit" class="btn btn-primary" style="margin-left:0.5rem;">Search</button>
+        </form>
+    </div>
     <div class="container d-flex p-2 bd-highlight flex-wrap justify-content-around align-items-stretch">
 
         @if(count($data) < 1)
