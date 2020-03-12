@@ -88,9 +88,9 @@
                             <label for="profile_pic" class="col-md-4 col-form-label text-md-right">{{ __('Profile Picture') }}</label>
 
                             <div class="col-md-6">
-                                <input id="profile_pic" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
+                                <input id="profile_pic" type="file" class="@error('profile_pic') is-invalid @enderror" name="profile_pic" value="{{ $user->profile_pic }}">
 
-                                @error('phone')
+                                @error('profile_pic')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

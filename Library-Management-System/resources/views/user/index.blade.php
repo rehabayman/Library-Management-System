@@ -1,5 +1,5 @@
 
-@extends('layouts.usernav')
+@extends('layouts.app')
 
 @section('content')
 <html>
