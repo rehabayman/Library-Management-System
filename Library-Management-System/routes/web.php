@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/home');
 });
+
+Route::resource('Book', 'BooksController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
