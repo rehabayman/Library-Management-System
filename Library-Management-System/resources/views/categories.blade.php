@@ -1,12 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div>
+        @foreach ($errors->all() as $item)
+                 <div class="alert alert-danger">
+                     {{$item}}    
+                </div>  
+                @endforeach
+                @if(session()->has('message'))
+                  <div class="alert alert-success">
+                        {{session()->get('message')}}
+                    </div>
+                @endif
+    </div>
         {!! Form::open(['route'=>['category.store'],'method'=>'post']) !!}
             {!! Form::text('category_name') !!}
             {!! Form::submit('Add Category') !!}
@@ -23,5 +30,6 @@
             {{-- @endif --}}
             </div>
             @endforeach  
-</body>
-</html>
+        </div>
+        @endsection
+        

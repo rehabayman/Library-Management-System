@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\UserRateBooks;
 use Illuminate\Http\Request;
-use App\Category;
-class CategoryController extends Controller
+
+use App\Book;
+
+class UserRateBooksController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('categories',['categories' => \App\Category::all()]);
+        //
     }
 
     /**
@@ -34,20 +37,29 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['category_name'=>'required|unique:categories,category_name,NULL,id,deleted_at,NULL|alpha|regex:/^[a-zA-Z]+$/']);
-        $storeDB = new Category();
-        $storeDB->category_name=$request->category_name;
-        $storeDB->save();
-        return redirect()->route('category.index')->with('message','Category has been added successfully');
+        //
+
+        $userRate = new UserRateBooks();
+        $userRate->user_id = $request->userId;
+        $userRate->book_id = $request->bookId;
+        $userRate->rating = $request->rate;
+
+        $userRate->save();
+
+        $book = Book::find($request->bookId);
+        $book->total_rating = UserRateBooks::where("book_id", $request->bookId)->avg('rating');
+        
+        $book->save();
+        return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\UserRateBook  $userRateBook
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(UserRateBook $userRateBook)
     {
         //
     }
@@ -55,39 +67,34 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\UserRateBook  $userRateBook
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(UserRateBook $userRateBook)
     {
-        return view('editCat',['category' => \App\Category::find($id)]);
-
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\UserRateBook  $userRateBook
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, UserRateBook $userRateBook)
     {
-       // $this->authorize('update',$categories);
-        $category->category_name=$request->category;
-        $category->save();
-        return redirect()->route('category.index');
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\UserRateBook  $userRateBook
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(UserRateBook $userRateBook)
     {
-        $category->delete();
-        return redirect()->route('category.index');
+        //
     }
 }
