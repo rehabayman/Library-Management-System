@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 use App\Category;
 use App\Book;
-use Illuminate\Http\Request;
+use App\UserRateBooks;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 class BooksController extends Controller
 {
     /**
@@ -16,7 +18,10 @@ class BooksController extends Controller
     {
         //
 
-        return view("listBooks", ["data"=> Book::all()]);
+        return view("listBooks", [ "Books" => Book::all(), 
+                                 "RatedBooks" => DB::table('user_rate_books')
+                                 ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+                                 ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
     }
 
     /**

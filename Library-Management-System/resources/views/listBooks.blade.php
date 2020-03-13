@@ -18,17 +18,23 @@
         @endif
     </div>
     <div class="container d-flex p-2 bd-highlight flex-wrap justify-content-around align-items-stretch">
-
-        @if(count($data) < 1)
-
-            <div class="container"><h1>There are no books available</h1><a href="Book/create">Create one?</a></div>
-        @endif
-        @foreach ($data as $book)
+        <div class="container">
+            @if(count($Books) < 1)
+                <h1>There are no books available</h1>
+            @endif
+            @if(Auth::user()->role == 1)
+                    <a href="Book/create">Create a Book.</a>
+            @endif
+        </div>
+        @foreach ($Books as $book)
             <div class="card align-self-stretch" style="width: 18rem;">
             <img src="storage/images/{{$book->cover}}" class="card-img-top" alt="{{$book->description}}">
                 <div class="card-body">
                 <h3 class="card-title">{{$book->title}}</h3>
-                  <p class="card-text">{{$book->description}}</p>
+                  @if($book->total_rating > 0 )
+                    Total rating: {{$book->total_rating}}
+                  @endif
+                  <p class="card-text">Description: {{$book->description}}</p>
                   <p class="card-tex">Category: {{$book->category->category_name}}</p>
                   <p class="card-tex">Price: {{$book->price}}</p>
                     @if ($book->num_of_copies < 1)
@@ -46,6 +52,38 @@
                                 @csrf 
                             </form>
                         </div>
+                    @endif
+
+                    @if(Auth::user()->role == 0)
+                        
+                        @php
+                            $userRatePrinted = false;
+                        @endphp
+                        
+                        @foreach ($RatedBooks as $ratedBook)
+                        
+                            @if( $book->id == $ratedBook->book_id && Auth::id() == $ratedBook->user_id )
+                                <p class="card-tex">You rated this book: {{$ratedBook->rating}}</p>
+                                @php
+                                    $userRatePrinted = true;   
+                                @endphp
+                            @endif
+                            
+                        @endforeach
+                        
+                        @if( !$userRatePrinted )                               
+                            <form method="POST" action="{{route('UserRateBook.store')}}">
+                                <input type="hidden" value="{{$book->id}}" name="bookId">
+                                <input type="hidden" value="{{Auth::id()}}" name="userId">
+                                <input type="number" min="1" max="5" name="rate" value="3">
+                                <input type="submit" class="btn btn-primary" value="Rate"> 
+                                @csrf 
+                            </form>
+                            @php
+                                $userRatePrinted= false;
+                            @endphp
+                        @endif
+
                     @endif
                 </div>
             </div>

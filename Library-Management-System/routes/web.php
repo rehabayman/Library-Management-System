@@ -19,6 +19,8 @@ Route::get('/', function () {
 });
 
 Route::resource('Book', 'BooksController');
+Route::resource('UserRateBook', 'UserRateBooksController');
+
 Route::resource('profile', 'UserController')->middleware('auth');
 
 
