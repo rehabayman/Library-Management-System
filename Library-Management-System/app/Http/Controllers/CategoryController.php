@@ -34,7 +34,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['category_name'=>'required|unique:categories,category_name,NULL,id,deleted_at,NULL|regex:/^[a-zA-Z]+$/']);
+        $request->validate(['category_name'=>'required|unique:categories,category_name,NULL,id,deleted_at,NULL|alpha|regex:/^[a-zA-Z]+$/']);
         $storeDB = new Category();
         $storeDB->category_name=$request->category_name;
         $storeDB->save();
