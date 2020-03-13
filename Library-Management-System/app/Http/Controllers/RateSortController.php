@@ -17,7 +17,7 @@ class RateSortController extends Controller
     public function index()
     {
         $data=Session::get('data');
-        return view("listBooks", ["data"=> $data->sortByDesc("publish_date"), 
+        return view("listBooks", ["data"=> $data->sortByDesc("total_rating"), 
                                 'categories' => Category::all(),
                                 "RatedBooks" => DB::table('user_rate_books')
                                 ->join('books', 'user_rate_books.book_id', '=', 'books.id')
