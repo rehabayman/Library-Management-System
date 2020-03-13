@@ -5,8 +5,10 @@ use App\Category;
 use App\Book;
 use App\UserRateBooks;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Auth;
+use App\UserLeaseBooks;
 class BooksController extends Controller
 {
     /**
@@ -21,7 +23,9 @@ class BooksController extends Controller
         return view("listBooks", [ "Books" => Book::all(), 
                                  "RatedBooks" => DB::table('user_rate_books')
                                  ->join('books', 'user_rate_books.book_id', '=', 'books.id')
-                                 ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
+                                 ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),
+                                 "data"=> Book::all(),'categories' => Category::all()]);
+       
     }
 
     /**
@@ -103,6 +107,7 @@ class BooksController extends Controller
      */
     public function update(Request $request, Book $book,$id)
     {
+        
         $request->validate([
             'title' => 'required|max:255',
             'author' => 'required',
@@ -142,5 +147,54 @@ class BooksController extends Controller
         $book = Book::find($id);
         $book->delete();
         return redirect()->back()->with('message', 'Book has been deleted successfully!');
+    }
+
+    public function search(Request $request)
+    {
+        // dd($request);
+        $searchBy = $request->search_param;
+        $searchText = $request->search_text;
+        if($searchText === "")
+        {
+            return view("listBooks", ["data"=> Book::all()]);
+        }
+        else {
+            $books = Book::where($searchBy, 'like', '%'.$searchText.'%')->get();
+            return view("listBooks", ["data"=> $books]);
+        }
+    }
+    public function filterByCategory(Request $request){
+        $request->validate([
+            'category'=>'required',
+        ]);
+        if($request->category==="all"){
+            return redirect("/Book");
+
+        }
+      
+        $category = Category::where('id', $request->category)->first();
+         return view("listBooks",['data'=>$category->books,'categories' => Category::all()]);
+        return redirect()->back()->with('data',$category->books)->with('categories',Category::all());
+    }
+    public function leaseBook(Request $request){
+     
+        $request->validate([
+            'book_id' => 'required',
+            'number_of_days'=>'required',
+                   
+        ]);
+        $book = Book::find($request->book_id);
+        if($book->num_of_copies<1)
+        return back()->withErrors(["Book is out of stock"]);
+        $leaseBook = new UserLeaseBooks;
+        $leaseBook->book_id = $request->book_id;
+        $leaseBook->user_id = Auth::user()->id;
+        $leaseBook->num_of_days = $request->number_of_days;
+        $leaseBook->save();     
+        $book=Book::find($request->book_id);
+        $num_of_copies=$book->num_of_copies;
+        $book->num_of_copies=$num_of_copies-1;
+        $book->save();           
+        return redirect()->back()->with('message', 'You has leased the book');
     }
 }

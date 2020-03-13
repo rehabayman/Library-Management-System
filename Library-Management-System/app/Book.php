@@ -16,9 +16,13 @@ class Book extends Model
      * @var string
      */
     protected $table = 'books';
-    public function usersComments()
+    public function usersCommented()
     {
         return $this->belongsToMany('App\User', 'user_commentedon_books');
+    }
+    public function comments()
+    {
+        return $this->hasMany('App\UserCommentedonBooks');
     }
     public function usersRate()
     {

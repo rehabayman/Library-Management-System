@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Book;
+use App\Category;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
-use App\Category;
-class CategoryController extends Controller
+
+class DateSortController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +16,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('categories',['categories' => \App\Category::all()]);
+        return view("listBooks", ["data"=> Book::all()->sortByDesc("publish_date"), 
+                                    'categories' => Category::all(),
+                                    "RatedBooks" => DB::table('user_rate_books')
+                                    ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+                                    ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),]);
+
     }
 
     /**
@@ -34,11 +42,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['category_name'=>'required|unique:categories,category_name,NULL,id,deleted_at,NULL|alpha|regex:/^[a-zA-Z]+$/']);
-        $storeDB = new Category();
-        $storeDB->category_name=$request->category_name;
-        $storeDB->save();
-        return redirect()->route('category.index')->with('message','Category has been added successfully');
+        //
     }
 
     /**
@@ -60,8 +64,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        return view('editCat',['category' => \App\Category::find($id)]);
-
+        //
     }
 
     /**
@@ -71,12 +74,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-       // $this->authorize('update',$categories);
-        $category->category_name=$request->category;
-        $category->save();
-        return redirect()->route('category.index');
+        //
     }
 
     /**
@@ -85,9 +85,8 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        $category->delete();
-        return redirect()->route('category.index');
+        //
     }
 }

@@ -1,5 +1,5 @@
 
-@extends('layouts.usernav')
+@extends('layouts.app')
 
 @section('content')
 <html>
@@ -15,6 +15,11 @@
                             <h4>{{$error}}</h4>
                             @endforeach
                         @endif
+                        @if (session('message'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('message') }}
+                        </div>
+                    @endif
                         <div class="card-body">                          
                             <form action="{{url('profile')."/".Auth::user()->id}}" method="post" enctype="multipart/form-data"
                                 >
