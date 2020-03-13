@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Category;
 use Illuminate\Support\Facades\DB;
-
+use Session;
 class RateSortController extends Controller
 {
     /**
@@ -16,11 +16,13 @@ class RateSortController extends Controller
      */
     public function index()
     {
-        return view("listBooks", ["data"=> Book::all()->sortByDesc("publish_date"), 
+        $data=Session::get('data');
+        return view("listBooks", ["data"=> $data->sortByDesc("total_rating"), 
                                 'categories' => Category::all(),
                                 "RatedBooks" => DB::table('user_rate_books')
                                 ->join('books', 'user_rate_books.book_id', '=', 'books.id')
                                 ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),]);
+        
     }
 
     /**

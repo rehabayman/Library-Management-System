@@ -6,7 +6,7 @@ use App\Category;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
-
+use Session;
 class DateSortController extends Controller
 {
     /**
@@ -16,11 +16,14 @@ class DateSortController extends Controller
      */
     public function index()
     {   
-        return view("listBooks", ["data"=> Book::all()->sortByDesc("publish_date"), 
+        $data=Session::get('data');
+        
+        return view("listBooks", ["data"=> $data->sortByDesc("publish_date"), 
                                     'categories' => Category::all(),
                                     "RatedBooks" => DB::table('user_rate_books')
                                     ->join('books', 'user_rate_books.book_id', '=', 'books.id')
                                     ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),]);
+       
 
     }
 

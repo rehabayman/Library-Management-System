@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Auth;
 use App\UserLeaseBooks;
+use Session;
 class BooksController extends Controller
 {
     /**
@@ -19,7 +20,7 @@ class BooksController extends Controller
     public function index()
     {
         //
-
+        Session::put("data",Book::all());
         return view("listBooks", [ "Books" => Book::all(), 
                                  "RatedBooks" => DB::table('user_rate_books')
                                  ->join('books', 'user_rate_books.book_id', '=', 'books.id')
@@ -175,6 +176,7 @@ class BooksController extends Controller
 
         }      
         $category = Category::where('id', $request->category)->first();
+        Session::put("data",$category->books);
         return view("listBooks",['data'=>$category->books,'categories' => Category::all(),"RatedBooks" => DB::table('user_rate_books')
         ->join('books', 'user_rate_books.book_id', '=', 'books.id')
         ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
