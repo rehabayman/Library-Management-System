@@ -146,13 +146,14 @@ class BooksController extends Controller
         $searchText = $request->search_text;
         if($searchText === "")
         {
-            return view("listBooks", ["data"=> Book::all()]);
+            return view("listBooks", ["data"=> Book::all(), 'categories' => Category::all()]);
         }
         else {
             $books = Book::where($searchBy, 'like', '%'.$searchText.'%')->get();
-            return view("listBooks", ["data"=> $books]);
+            return view("listBooks", ["data"=> $books, 'categories' => Category::all()]);
         }
     }
+    
     public function filterByCategory(Request $request){
         if($request->category==="all"){
             return redirect("/Book");

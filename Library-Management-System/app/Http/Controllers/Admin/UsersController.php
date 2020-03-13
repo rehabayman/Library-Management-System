@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
-
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
     /**
      * Display a listing of the resource.
      *
@@ -82,8 +77,9 @@ class UsersController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
             'email' => 'required|email:rfc,dns|unique:users,email,'.$user->id,
-            'phone' => 'starts_with:011,012,010,015|digits:11',
-            'role' => 'sometimes|required_without:active'
+            'phone' => 'nullable|starts_with:011,012,010,015|digits:11',
+            // 'role' => 'sometimes',
+            'profile_pic'=>'nullable|file|mimes:jpeg,png,jpg,svg|max:5048',
         ]);
 
         $this->authorize('update', $user);
@@ -107,10 +103,15 @@ class UsersController extends Controller
             else {
                 $user->role = "admin"; //promote user
             }
-
         }
         elseif (!isset($request->role)) {
             $user->role = "user"; //degrade user
+        }
+        if ($request->profile_pic !== null) {
+            $image = $request->file('profile_pic');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();   
+            $image->move(public_path('images'), $new_name);
+            $user->profile_pic = $new_name;
         }
         
         $user->save();

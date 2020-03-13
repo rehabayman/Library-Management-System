@@ -65,6 +65,9 @@
                                 <a class="dropdown-item" href="{{ route('category.index') }}">
                                     Categories
                                 </a>
+                                <a class="dropdown-item" href="{{ route('Book.index') }}">
+                                    Book Management
+                                </a>
                                 @endcan
 
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();

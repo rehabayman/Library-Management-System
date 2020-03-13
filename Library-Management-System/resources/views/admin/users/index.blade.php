@@ -10,8 +10,9 @@
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
-                            <th scope="col">ID</th>
+                            <!-- <th scope="col">ID</th> -->
                             <th scope="col">Name</th>
+                            <th scope="col">Profile Picture</th>
                             <th scope="col">Username</th>
                             <th scope="col">Role</th>
                             <th scope="col">Status</th>
@@ -21,19 +22,20 @@
                         <tbody>
                             @foreach ($users as $user) 
                                 <tr>
-                                    <th scope="row">{{$user->id}}</th>
+                                    <!-- <th scope="row">{{$user->id}}</th> -->
                                     <td>{{$user->name}}</td>
+                                    <td><img src="{{ URL::to('/') }}/images/{{ $user->profile_pic }}" style="height:120px;"></td>
                                     <td>{{$user->username}}</td>
                                     <td>{{$user->role}}</td>
                                     <td> @if($user->active == 1) active @else inactive @endif</td>
                                     <td>
                                         <a href="{{ route('admin.users.edit', $user->id) }}"><button type="button" class="btn btn-primary float-left">Edit</button></a>
-                                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="float-left" style="margin-left:0.5rem;">
+                                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="float-left" style="margin-left:0.3rem;">
                                             @csrf
                                             {{ method_field('DELETE') }}
                                             <button type="submit" class="btn btn-danger">Delete</button>
                                         </form>
-                                        <form action="{{ route('admin.users.handleActiveStatus', $user) }}" method="POST" class="float-left" style="margin-left:0.5rem;">
+                                        <form action="{{ route('admin.users.handleActiveStatus', $user) }}" method="POST" class="float-left" style="margin-left:0.3rem;">
                                             @csrf
                                             {{ method_field('PUT') }}
                                             @if($user->role == "user")

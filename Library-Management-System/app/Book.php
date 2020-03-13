@@ -20,7 +20,7 @@ class Book extends Model
     {
         return $this->belongsToMany('App\User', 'user_commentedon_books');
     }
-    public function Comments()
+    public function comments()
     {
         return $this->hasMany('App\UserCommentedonBooks');
     }
