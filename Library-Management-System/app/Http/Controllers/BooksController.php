@@ -170,11 +170,11 @@ class BooksController extends Controller
         if($request->category==="all"){
             return redirect("/Book");
 
-        }
-      
+        }      
         $category = Category::where('id', $request->category)->first();
-         return view("listBooks",['data'=>$category->books,'categories' => Category::all()]);
-        return redirect()->back()->with('data',$category->books)->with('categories',Category::all());
+        return view("listBooks",['data'=>$category->books,'categories' => Category::all(),"RatedBooks" => DB::table('user_rate_books')
+        ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+        ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
     }
     public function leaseBook(Request $request){
      
@@ -197,4 +197,5 @@ class BooksController extends Controller
         $book->save();           
         return redirect()->back()->with('message', 'You has leased the book');
     }
+
 }

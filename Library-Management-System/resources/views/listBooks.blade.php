@@ -133,7 +133,7 @@
                         @php
                             $userRatePrinted = false;
                         @endphp
-                        
+                      
                         @foreach ($RatedBooks as $ratedBook)
                         
                             @if( $book->id == $ratedBook->book_id && Auth::id() == $ratedBook->user_id )
@@ -144,6 +144,7 @@
                             @endif
                             
                         @endforeach
+                       
                         
                         @if( !$userRatePrinted )                               
                             <form method="POST" action="{{route('UserRateBook.store')}}">

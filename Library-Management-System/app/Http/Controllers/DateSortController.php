@@ -15,7 +15,7 @@ class DateSortController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
         return view("listBooks", ["data"=> Book::all()->sortByDesc("publish_date"), 
                                     'categories' => Category::all(),
                                     "RatedBooks" => DB::table('user_rate_books')
