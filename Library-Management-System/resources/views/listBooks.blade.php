@@ -31,8 +31,8 @@
         </form>
     </div>
     <div class="container">
-        <a href="rate">Sort by rate</a>
-        <a href="date">Sort by Date</a>  
+        <a href="/rate">Sort by rate</a>
+        <a href="/date">Sort by Date</a>  
         <div class="form-group" class="form-control">
 
             <form method="Get" action="{{route('Book.category')}}">
