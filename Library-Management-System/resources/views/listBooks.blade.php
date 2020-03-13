@@ -36,6 +36,8 @@
                
             <div class="container"><h1>There are no books available</h1><a href="/Book/create">Create one?</a></div>
         @endif
+        <a href="rate">Sort by rate</a>
+        <a href="date">Sort by Date</a>  
         <div class="form-group" class="form-control">
 
             <form method="Get" action="{{route('Book.category')}}">
@@ -43,7 +45,7 @@
                 <select name="category">
                     <option value="" selected>Choose a category</option>
                     <option value="all" >All Category</option>
-                    @foreach ($categories as $item)
+                    @foreach ($errors as $item)
                     <option type="submit" value="{{$item->id}}">{{$item->category_name}}</option>
                     
                     @endforeach
