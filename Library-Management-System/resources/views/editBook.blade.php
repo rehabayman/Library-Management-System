@@ -40,6 +40,11 @@
             </div>
 
             <div class="form-group">
+                <label>Publish Date</label>
+                <input type="date" class="form-control" placeholder="Enter Date" name="publish_date" value="{{ $book->publish_date }}">
+            </div>
+
+            <div class="form-group">
                 <label>Number of copies</label>
                 <input type="number" class="form-control" value="{{$book->num_of_copies}}" placeholder="Enter #copies" min="0" name="num_of_copies">
             </div>

@@ -37,6 +37,36 @@
                 <button type="submit" class="btn btn-primary" style="float:right;">Comment</button>
             </form>
         </div>
+
+        <div class="container">
+            <h1>Related Books</h1>
+            <div class="container d-flex p-2 bd-highlight flex-wrap justify-content-around align-items-stretch">
+            @foreach ($relatedBooks as $book)
+                <div class="card align-self-stretch" style="width: 18rem;">
+                    <img src="storage/images/{{$book->cover}}" class="card-img-top" alt="{{$book->description}}">
+                    
+                    <div class="card-body">
+                        <h3 class="card-title">{{$book->title}}</h3>
+                        @if($book->total_rating > 0 )
+                            Total rating: {{$book->total_rating}}
+                        @endif
+                        <p class="card-text">Description: {{$book->description}}</p>
+                        <p class="card-tex">Category: {{$book->category->category_name}}</p>
+                        <p class="card-tex">Price: {{$book->price}}</p>
+                        @if ($book->num_of_copies < 1)
+                            <p class="card-tex">Number Of Copies: 0</p>
+                        @else
+                            <p class="card-tex">Number Of Copies: {{$book->num_of_copies}}</p>
+                        @endif
+                        <div class="container d-flex p-2 bd-highlight justify-content-around align-items-stretch">
+                            <a class="btn btn-success" href="{{route('comment.bookComments' , $book->id)}}">Details</a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+            </div>
+        </div>
+
         <div class="container">
             <h1>Comments</h1>
                 @if(count($comments) > 0)
