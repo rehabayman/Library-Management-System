@@ -56,7 +56,12 @@ class CommentController extends Controller
             $usersData[$comment->id] = $user;
         }
 
-        return view('comment.bookcomments', ["book"=> $book, 'comments' => $comments, 'users' => $usersData]);
+        $relatedBooks = Book::where([
+            ['category_id', $book->category_id],
+            ['id', '<>', $book->id]
+            ])->paginate(5);
+
+        return view('comment.bookcomments', ["book"=> $book, 'comments' => $comments, 'users' => $usersData, 'relatedBooks' => $relatedBooks]);
     }
 
     /**
@@ -109,7 +114,13 @@ class CommentController extends Controller
             $user = User::where('id', $comment->user_id)->first(); 
             $usersData[$comment->id] = $user;
         }
-        return \redirect()->route('comment.bookComments', ["book"=> $book, 'comments' => $comments, 'users' => $usersData]);
+        
+        $relatedBooks = Book::where([
+            ['category_id', $book->category_id],
+            ['id', '<>', $book->id]
+            ])->paginate(5);
+
+        return \redirect()->route('comment.bookComments', ["book"=> $book, 'comments' => $comments, 'users' => $usersData, 'relatedBooks' => $relatedBooks]);
     }
 
     public function bookComments(Request $request, Book $book)
@@ -120,6 +131,12 @@ class CommentController extends Controller
             $user = User::where('id', $comment->user_id)->first(); 
             $usersData[$comment->id] = $user;
         }
-        return view('comment.bookcomments', ["book"=> $book, 'comments' => $comments, 'users' => $usersData]);
+        
+        $relatedBooks = Book::where([
+            ['category_id', $book->category_id],
+            ['id', '<>', $book->id]
+            ])->paginate(5);
+
+        return view('comment.bookcomments', ["book"=> $book, 'comments' => $comments, 'users' => $usersData, 'relatedBooks' => $relatedBooks]);
     }
 }

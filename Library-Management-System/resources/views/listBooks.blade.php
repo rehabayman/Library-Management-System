@@ -32,38 +32,20 @@
                 <input type="text" name="search_text" class="form-control form-control-m ml-3 w-50" placeholder="Search" aria-label="Search">
                 <button type="submit" class="btn btn-primary" style="margin-left:0.5rem;">Search</button>
         </form>
-        <!-- <div class="form-group" class="form-control" style="margin-top:1.5rem;">
-
-        <form method="Get" action="{{route('Book.category')}}" class="form-inline">
-            
-            <label for="category" style="margin-right:2rem;">Filter By</label>
-            <select name="category" class="form-control form-control-m" data-width="fit">
-                <option value="" selected>Choose a category</option>
-                <option value="all" >All Category</option>
-                @foreach ($categories as $item)
-                <option type="submit" value="{{$item->id}}">{{$item->category_name}}</option>
-                
-                @endforeach
-            </select>
-            <input type="submit" class="btn btn-primary" value="Filter" style="margin-left:0.5rem;"> 
-        </form>
-
-        </div> -->
     </div>
 
     <!-- Filter and Sort Section -->
     <div class="container d-flex p-2 bd-highlight flex-wrap justify-content-around align-items-stretch">
-
-        <!-- {{-- @if(count($data) < 1)
-            <div class="container"><h1>There are no books available</h1>
-            @can('isAdmin', User::class)
-            <a href="/Book/create">Create one?</a></div>
-            @endcan
-        @endif --}} -->
       
         <div class="container">
-            <a href="/rate">Sort by rate</a>
-            <a href="/date">Sort by Date</a>  
+            <div class="form-group" class="form-control">
+                <a href="/rate">Sort by rate</a>
+                <a href="/date">Sort by Date</a>  
+                
+                @can('isAdmin', Auth::user())
+                    <a class="btn btn-primary" href="/Book/create">Create Book</a><br>
+                @endcan
+            </div>
 
             <div class="form-group" class="form-control">
                 <form method="Get" action="{{route('Book.category')}}" class="form-inline">
@@ -77,32 +59,29 @@
                     </select>
                     <input type="submit" class="btn btn-primary" value="Filter"> 
                 </form>
-                
             </div>
     </div>
 
     <!-- Book Section -->
     <div class="container d-flex p-2 bd-highlight flex-wrap justify-content-around align-items-stretch">
-        <!-- {{-- <div class="container">
-            @if(count($Books) < 1)
+        <!-- <div class="container">
+            {{-- @if(count($Books) < 1)
                 <h1>There are no books available</h1>
             @endif
             @if(Auth::user()->role == "admin")
                     <a href="Book/create">Create a Book.</a>
-            @endif
-        </div> --}} -->
+            @endif --}}
+        </div> -->
         
         @if(count($data) < 1)
             <div class="container">
-                <h1>There are no books available</h1>
-                @can('isAdmin', User::class)
+                <h1>There are no books available!!</h1>
+                @can('isAdmin', Auth::user())
                     <a href="/Book/create">Create one?</a>
                 @endcan
             </div>
         @endif
-        
-        <!-- {{-- @foreach ($Books as $book) --}} -->
-      
+
         @foreach ($data as $book)
         
             <div class="card align-self-stretch" style="width: 18rem;">
@@ -220,6 +199,6 @@
         </div>
     </div>
     @endforeach
-    <!-- {{-- @endforeach --}} -->
+
 </div>
 @endsection

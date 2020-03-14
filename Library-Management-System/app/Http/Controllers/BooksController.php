@@ -62,6 +62,7 @@ class BooksController extends Controller
             'num_of_copies' => 'required',
             'category' => 'required',
             'cover' => 'required|file|mimes:png,jpeg,jpg',
+            'publish_date' => 'required|date'
         ]);
 
         $book = new Book();
@@ -72,6 +73,7 @@ class BooksController extends Controller
         $book->price = $request->price;
         $book->num_of_copies = $request->num_of_copies;
         $book->category_id = $request->category;
+        $book->publish_date = $request->publish_date;
         $book->cover = $request->cover->store("public/images");
         $book->cover = explode("/", $book->cover);
         $book->cover = $book->cover[count($book->cover) - 1];
@@ -122,6 +124,7 @@ class BooksController extends Controller
             'num_of_copies' => 'required',
             'category' => 'required',
             'cover' => 'required|file|mimes:png,jpeg,jpg',
+            'publish_date' => 'required|date'
         ]);
 
         $book = Book::find($id);
@@ -132,6 +135,7 @@ class BooksController extends Controller
         $book->price = $request->price;
         $book->num_of_copies = $request->num_of_copies;
         $book->category_id = $request->category;
+        $book->publish_date = $request->publish_date;
         $book->cover = $request->cover->store("public/images");
         $book->cover = explode("/", $book->cover);
         $book->cover = $book->cover[count($book->cover) - 1];

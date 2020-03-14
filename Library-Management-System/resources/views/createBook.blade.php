@@ -34,6 +34,11 @@
             </div>
 
             <div class="form-group">
+                <label>Publish Date</label>
+                <input type="date" class="form-control" placeholder="Enter Date" name="publish_date">
+            </div>
+
+            <div class="form-group">
                 <label>Book's Price</label>
                 <input type="number" class="form-control" placeholder="Enter Price" min="1" name="price">
             </div>
