@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -46,7 +46,6 @@ class LoginController extends Controller
     public function credentials(Request $request)
     {
         return array_merge($request->only($this->username(), 'password'), ['active' => '1']);
-        return $credentials;
     } 
 
 
@@ -59,7 +58,7 @@ class LoginController extends Controller
 
         // Check if user was successfully loaded, that the password matches
         // and active is not 1. If so, override the default error message.
-        if ($user && \Hash::check($request->password, $user->password) && $user->active != 1) {
+        if ($user && Hash::check($request->password, $user->password) && $user->active != 1) {
             $errors = [$this->username() => trans('auth.notactivated')];
         }
 

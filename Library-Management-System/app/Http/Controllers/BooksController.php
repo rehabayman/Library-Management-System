@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Book;
 use App\UserRateBooks;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Auth;
 use App\UserLeaseBooks;
+use App\UserFavoriteBooks;
 use Session;
 class BooksController extends Controller
 {
@@ -20,7 +21,7 @@ class BooksController extends Controller
     public function index()
     {
         //
-        Session::put("data",Book::all());
+        // Session::put("data",Book::all());
         return view("listBooks", [ "Books" => Book::all(), 
                                  "RatedBooks" => DB::table('user_rate_books')
                                  ->join('books', 'user_rate_books.book_id', '=', 'books.id')
@@ -176,7 +177,7 @@ class BooksController extends Controller
 
         }      
         $category = Category::where('id', $request->category)->first();
-        Session::put("data",$category->books);
+        // Session::put("data",$category->books);
         return view("listBooks",['data'=>$category->books,'categories' => Category::all(),"RatedBooks" => DB::table('user_rate_books')
         ->join('books', 'user_rate_books.book_id', '=', 'books.id')
         ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
@@ -203,4 +204,26 @@ class BooksController extends Controller
         return redirect()->back()->with('message', 'You have leased the book');
     }
 
+    public function favouriteBook(Request $request){
+
+        $favouriteBook = new UserFavoriteBooks;
+        $favouriteBook->user_id = Auth::id();
+        $favouriteBook->book_id = $request->book_id;
+        $favouriteBook->save();
+        return redirect()->back()->with('message', 'You have favourited the book');
+    }
+    public function unfavouriteBook(Request $request){
+
+        UserFavoriteBooks::where('book_id',$request->book_id)->where('user_id',Auth::id())->delete();
+        return redirect()->back()->with('message', 'You have unfavourited the book');
+    }
+
+    public function favourites(){
+        return view("listBooks", [ "Books" => Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at',null)->get(), 
+                                 "RatedBooks" => DB::table('user_rate_books')
+                                 ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+                                 ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),
+                                 "data"=> Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at',null)-> get(),'categories' => Category::all()]);
+       
+    }
 }

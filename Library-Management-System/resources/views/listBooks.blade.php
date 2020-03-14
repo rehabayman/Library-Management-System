@@ -32,6 +32,8 @@
                 <input type="text" name="search_text" class="form-control form-control-m ml-3 w-50" placeholder="Search" aria-label="Search">
                 <button type="submit" class="btn btn-primary" style="margin-left:0.5rem;">Search</button>
         </form>
+        <a href="/favourites">Favourite Books</a>
+
         <!-- <div class="form-group" class="form-control" style="margin-top:1.5rem;">
 
         <form method="Get" action="{{route('Book.category')}}" class="form-inline">
@@ -120,6 +122,22 @@
                         <p class="card-tex">Number Of Copies: 0</p>
                     @else
                         <p class="card-tex">Number Of Copies: {{$book->num_of_copies}}</p>
+                    @endif
+                
+                    @if(!App\UserFavoriteBooks::favourited($book))
+                    {!! Form::open(['route' => ['Book.favourite'] , 'method' => 'POST']) !!}
+                        {{ Form::hidden('book_id', $book->id) }}
+                        <button type="submit" class='btn btn-naked'>
+                        <i class="fa fa-heart-o fa-3x" style="color:red" aria-hidden='true'></i>
+                        </button>
+                    {!! Form::close() !!}
+                    @else
+                    {!! Form::open(['route' => ['Book.unfavourite'] , 'method' => 'POST']) !!}
+                        {{ Form::hidden('book_id', $book->id) }}
+                        <button type="submit" class='btn btn-naked'>
+                        <i class="fa fa-heart fa-3x not-favourited" style="color:red" aria-hidden='true'></i>
+                        </button>
+                    {!! Form::close() !!}
                     @endif
 
             @cannot('isAdmin', App\User::class)   

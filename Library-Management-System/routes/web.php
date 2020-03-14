@@ -33,6 +33,12 @@ Route::get('/comment/{book}/comments', 'CommentController@bookComments')->name('
 
 Route::post('Book/lease', 'BooksController@leaseBook')->name('Book.lease')->middleware('auth');
 
+Route::post('Book/favourite', 'BooksController@favouriteBook')->name('Book.favourite')->middleware('auth');
+Route::post('Book/unfavourite', 'BooksController@unfavouriteBook')->name('Book.unfavourite')->middleware('auth');
+Route::get('/favourites', 'BooksController@favourites')->name('Book.favourites')->middleware('auth');
+
+
+
 
 
 Auth::routes();

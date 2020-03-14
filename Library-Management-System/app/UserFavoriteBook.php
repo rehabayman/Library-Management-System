@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class UserFavoriteBooks extends Model  
 {
@@ -45,4 +46,9 @@ class UserFavoriteBooks extends Model
      */
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
+    public static function favourited(Book $book)
+    {
+        $favouriteBook = new UserFavoriteBooks;
+        return $favouriteBook->where('book_id',$book->id)->where('user_id',Auth::id())->exists();
+    }
 }
