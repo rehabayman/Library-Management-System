@@ -84,16 +84,16 @@ class UsersController extends Controller
 
         $this->authorize('update', $user);
 
-        if($request->name !== null) {
+        if(($request->name !== null) && ($request->name !== $user->name)) {
             $user->name = $request->name;
         }
-        if($request->email !== null) {
+        if(($request->email !== null) && ($request->email !== $user->email)) {
             $user->email = $request->email;
         }
-        if($request->phone !== null) {
+        if(($request->phone !== null) && ($request->phone !== $user->phone)) {
             $user->phone = $request->phone;
         }
-        elseif ($request->phone == null) {
+        elseif ($request->phone == null) {  //user removed his/her phone number
             $user->phone = null;
         }
         if(isset($request->role)) {
@@ -114,7 +114,7 @@ class UsersController extends Controller
             $user->profile_pic = $new_name;
         }
         
-        $user->save();
+        $user->update();
         return \redirect()->route('admin.users.index');
     }
 

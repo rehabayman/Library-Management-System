@@ -40,7 +40,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-// Route::resource('/admin/users', 'Admin\UsersController', ['except' => ['show', 'create', 'store']]);
+
 
 //This is for grouping
 Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
