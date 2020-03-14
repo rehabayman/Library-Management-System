@@ -68,6 +68,9 @@
                                 <a class="dropdown-item" href="{{ route('Book.index') }}">
                                     Book Management
                                 </a>
+                                <a class="dropdown-item" href="{{ route('Book.profits') }}">
+                                    Profit Chart
+                                </a>
                                 @endcan
 
                                 @cannot('isAdmin', App\User::class)

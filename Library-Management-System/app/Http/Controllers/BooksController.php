@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Category;
 use App\Book;
 use App\UserRateBooks;
@@ -9,8 +10,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\UserLeaseBooks;
+use App\Charts\ProfitChart;
 use App\UserFavoriteBooks;
 use Session;
+
 class BooksController extends Controller
 {
     /**
@@ -22,12 +25,13 @@ class BooksController extends Controller
     {
         //
         // Session::put("data",Book::all());
-        return view("listBooks", [ "Books" => Book::all(), 
-                                 "RatedBooks" => DB::table('user_rate_books')
-                                 ->join('books', 'user_rate_books.book_id', '=', 'books.id')
-                                 ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),
-                                 "data"=> Book::all(),'categories' => Category::all()]);
-       
+        return view("listBooks", [
+            "Books" => Book::all(),
+            "RatedBooks" => DB::table('user_rate_books')
+                ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+                ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),
+            "data" => Book::all(), 'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -70,7 +74,7 @@ class BooksController extends Controller
         $book->category_id = $request->category;
         $book->cover = $request->cover->store("public/images");
         $book->cover = explode("/", $book->cover);
-        $book->cover = $book->cover[count($book->cover) - 1 ];
+        $book->cover = $book->cover[count($book->cover) - 1];
         $book->save();
 
         return redirect()->back()->with('message', 'Book has been added successfully!');
@@ -107,9 +111,9 @@ class BooksController extends Controller
      * @param  \App\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book,$id)
+    public function update(Request $request, Book $book, $id)
     {
-        
+
         $request->validate([
             'title' => 'required|max:255',
             'author' => 'required',
@@ -130,7 +134,7 @@ class BooksController extends Controller
         $book->category_id = $request->category;
         $book->cover = $request->cover->store("public/images");
         $book->cover = explode("/", $book->cover);
-        $book->cover = $book->cover[count($book->cover) - 1 ];
+        $book->cover = $book->cover[count($book->cover) - 1];
         $book->save();
 
         return redirect()->back()->with('message', 'Book has been updated successfully!');
@@ -154,57 +158,57 @@ class BooksController extends Controller
         // dd($request);
         $searchBy = $request->search_param;
         $searchText = $request->search_text;
-        if($searchText === "")
-        {
-            return view("listBooks", ["data"=> Book::all(), 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
-            ->join('books', 'user_rate_books.book_id', '=', 'books.id')
-            ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
-        }
-        else {
-            $books = Book::where($searchBy, 'like', '%'.$searchText.'%')->get();
-            return view("listBooks", ["data"=> $books, 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
-            ->join('books', 'user_rate_books.book_id', '=', 'books.id')
-            ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
+        if ($searchText === "") {
+            return view("listBooks", ["data" => Book::all(), 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
+                ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+                ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
+        } else {
+            $books = Book::where($searchBy, 'like', '%' . $searchText . '%')->get();
+            return view("listBooks", ["data" => $books, 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
+                ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+                ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
         }
     }
-    
-    public function filterByCategory(Request $request){
-        $request->validate([
-            'category'=>'required',
-        ]);
-        if($request->category==="all"){
-            return redirect("/Book");
 
-        }      
+    public function filterByCategory(Request $request)
+    {
+        $request->validate([
+            'category' => 'required',
+        ]);
+        if ($request->category === "all") {
+            return redirect("/Book");
+        }
         $category = Category::where('id', $request->category)->first();
         // Session::put("data",$category->books);
-        return view("listBooks",['data'=>$category->books,'categories' => Category::all(),"RatedBooks" => DB::table('user_rate_books')
-        ->join('books', 'user_rate_books.book_id', '=', 'books.id')
-        ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
+        return view("listBooks", ['data' => $category->books, 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
+            ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+            ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
     }
-    public function leaseBook(Request $request){
-     
+    public function leaseBook(Request $request)
+    {
+
         $request->validate([
             'book_id' => 'required',
-            'number_of_days'=>'required',
-                   
+            'number_of_days' => 'required',
+
         ]);
         $book = Book::find($request->book_id);
-        if($book->num_of_copies<1)
-        return back()->withErrors(["Book is out of stock"]);
+        if ($book->num_of_copies < 1)
+            return back()->withErrors(["Book is out of stock"]);
         $leaseBook = new UserLeaseBooks;
         $leaseBook->book_id = $request->book_id;
         $leaseBook->user_id = Auth::user()->id;
         $leaseBook->num_of_days = $request->number_of_days;
-        $leaseBook->save();     
-        $book=Book::find($request->book_id);
-        $num_of_copies=$book->num_of_copies;
-        $book->num_of_copies=$num_of_copies-1;
-        $book->save();           
+        $leaseBook->save();
+        $book = Book::find($request->book_id);
+        $num_of_copies = $book->num_of_copies;
+        $book->num_of_copies = $num_of_copies - 1;
+        $book->save();
         return redirect()->back()->with('message', 'You have leased the book');
     }
 
-    public function favouriteBook(Request $request){
+    public function favouriteBook(Request $request)
+    {
 
         $favouriteBook = new UserFavoriteBooks;
         $favouriteBook->user_id = Auth::id();
@@ -212,18 +216,48 @@ class BooksController extends Controller
         $favouriteBook->save();
         return redirect()->back()->with('message', 'You have favourited the book');
     }
-    public function unfavouriteBook(Request $request){
+    public function unfavouriteBook(Request $request)
+    {
 
-        UserFavoriteBooks::where('book_id',$request->book_id)->where('user_id',Auth::id())->delete();
+        UserFavoriteBooks::where('book_id', $request->book_id)->where('user_id', Auth::id())->delete();
         return redirect()->back()->with('message', 'You have unfavourited the book');
     }
 
-    public function favourites(){
-        return view("listBooks", [ "Books" => Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at',null)->get(), 
-                                 "RatedBooks" => DB::table('user_rate_books')
-                                 ->join('books', 'user_rate_books.book_id', '=', 'books.id')
-                                 ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),
-                                 "data"=> Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at',null)-> get(),'categories' => Category::all()]);
-       
+    public function favourites()
+    {
+        return view("listBooks", [
+            "Books" => Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at', null)->get(),
+            "RatedBooks" => DB::table('user_rate_books')
+                ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+                ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),
+            "data" => Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at', null)->get(), 'categories' => Category::all()
+        ]);
+    }
+
+    public function profitChart()
+    {
+        $profits = DB::table('user_lease_books')
+        ->join('books', 'user_lease_books.book_id', '=', 'books.id')
+        ->selectRaw('books.price * books.profit_precentage * 0.01 *  user_lease_books.num_of_days as total_profit')
+        ->get()->pluck('total_profit')->toArray();
+
+        $dates = DB::table('user_lease_books')->selectRaw('(created_at)')
+        ->get()->pluck('created_at')->toArray();
+
+// dd($books);
+        $chart = new ProfitChart;
+
+        $chart->labels($dates);
+
+        $chart->dataset('Profit per day', 'line', $profits)->options([
+
+            'fill' => 'true',
+
+            'borderColor' => '#51C1C0'
+
+        ]);
+
+
+        return view('chart', compact('chart'));
     }
 }

@@ -37,7 +37,7 @@ Route::post('Book/favourite', 'BooksController@favouriteBook')->name('Book.favou
 Route::post('Book/unfavourite', 'BooksController@unfavouriteBook')->name('Book.unfavourite')->middleware('auth');
 Route::get('/favourites', 'BooksController@favourites')->name('Book.favourites')->middleware('auth');
 
-
+Route::get('chart', 'BooksController@profitChart')->name('Book.profits')->middleware('auth');
 
 
 
