@@ -71,6 +71,7 @@
                                 @endcan
 
                                 @cannot('isAdmin', App\User::class)
+                                <a class="dropdown-item" href="/favourites">Favourite Books</a>
                                 <a class="dropdown-item" href="{{ route('profile.edit', Auth::user()) }}">
                                     Edit Profile
                                 </a>

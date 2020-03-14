@@ -32,8 +32,6 @@
                 <input type="text" name="search_text" class="form-control form-control-m ml-3 w-50" placeholder="Search" aria-label="Search">
                 <button type="submit" class="btn btn-primary" style="margin-left:0.5rem;">Search</button>
         </form>
-        <a href="/favourites">Favourite Books</a>
-
         <!-- <div class="form-group" class="form-control" style="margin-top:1.5rem;">
 
         <form method="Get" action="{{route('Book.category')}}" class="form-inline">
