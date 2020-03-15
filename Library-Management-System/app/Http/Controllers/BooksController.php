@@ -163,17 +163,31 @@ class BooksController extends Controller
 
     public function search(Request $request)
     {
-        $searchBy = $request->search_param;
-        $searchText = $request->search_text;
-        if($searchText === "")
+        $GLOBALS['searchBy'] = $request->search_param;
+        $GLOBALS['searchText'] = $request->search_text;
+        if($GLOBALS['searchText'] === "")
         {
+           
             return view("listBooks", ["data"=> Book::all(), 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
             ->join('books', 'user_rate_books.book_id', '=', 'books.id')
             ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
         }
         else {
+            $books = Session::get('filtered')->filter(function ($value, $key) {         
+                if($GLOBALS['searchText']==="author")  {     
+                    if (strpos($value->author,$GLOBALS['searchText']) !== false) {
+                        return $value;
+                    }
+                }
+                else 
+                    if (strpos($value->title,$GLOBALS['searchText']) !== false) {
+                        return $value;
+                    }
+            });
             
-            $books = Book::where($searchBy, 'like', '%'.$searchText.'%')->get();
+            // $books = Book::where($searchBy, 'like', '%'.$searchText.'%')->get();
+            Session::put("data",$books);
+            Session::put("filtered",$books);
             return view("listBooks", ["data"=> $books, 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
             ->join('books', 'user_rate_books.book_id', '=', 'books.id')
             ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
