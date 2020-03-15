@@ -62,7 +62,8 @@ class BooksController extends Controller
             'num_of_copies' => 'required',
             'category' => 'required',
             'cover' => 'required|file|mimes:png,jpeg,jpg',
-            'publish_date' => 'required|date'
+            'publish_date' => 'required|date',
+            'profit_precentage' => 'required|numeric|between:0,0.70'
         ]);
 
         $book = new Book();
@@ -71,6 +72,7 @@ class BooksController extends Controller
         $book->author = $request->author;
         $book->description = $request->description;
         $book->price = $request->price;
+        $book->profit_precentage = $request->profit_precentage;
         $book->num_of_copies = $request->num_of_copies;
         $book->category_id = $request->category;
         $book->publish_date = $request->publish_date;
@@ -124,7 +126,8 @@ class BooksController extends Controller
             'num_of_copies' => 'required',
             'category' => 'required',
             'cover' => 'required|file|mimes:png,jpeg,jpg',
-            'publish_date' => 'required|date'
+            'publish_date' => 'required|date',
+            'profit_precentage' => 'required|numeric|between:0,0.70'
         ]);
 
         $book = Book::find($id);
@@ -133,6 +136,7 @@ class BooksController extends Controller
         $book->author = $request->author;
         $book->description = $request->description;
         $book->price = $request->price;
+        $book->profit_precentage = $request->profit_precentage;
         $book->num_of_copies = $request->num_of_copies;
         $book->category_id = $request->category;
         $book->publish_date = $request->publish_date;

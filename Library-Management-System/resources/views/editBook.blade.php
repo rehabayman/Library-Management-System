@@ -40,6 +40,11 @@
             </div>
 
             <div class="form-group">
+                <label>Profit's Percentage</label>
+                <input type="number" class="form-control" value="{{$book->profit_precentage}}" placeholder="Enter Profit Percentage" min="0.2" max="0.7" step="0.01" name="profit_precentage">
+            </div>
+
+            <div class="form-group">
                 <label>Publish Date</label>
                 <input type="date" class="form-control" placeholder="Enter Date" name="publish_date" value="{{ $book->publish_date }}">
             </div>
