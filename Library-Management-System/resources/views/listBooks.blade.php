@@ -82,6 +82,7 @@
                 
             </div>
     </div>
+    <a href="/Book">Display All Books </a>
 
     <!-- Book Section -->
     <div class="container d-flex p-2 bd-highlight flex-wrap justify-content-around align-items-stretch">

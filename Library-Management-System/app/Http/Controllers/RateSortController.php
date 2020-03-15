@@ -16,7 +16,12 @@ class RateSortController extends Controller
      */
     public function index()
     {
+        if(Session::get('filtered')){
+            $data=Session::get('filtered');
+        }
+        else
         $data=Session::get('data');
+        Session::put('data',$data->sortByDesc("total_rating"));
         return view("listBooks", ["data"=> $data->sortByDesc("total_rating"), 
                                 'categories' => Category::all(),
                                 "RatedBooks" => DB::table('user_rate_books')

@@ -20,8 +20,9 @@ class BooksController extends Controller
      */
     public function index()
     {
-        //
-        // Session::put("data",Book::all());
+        
+        Session::put("data",Book::all());
+        Session::put("filtered",Book::all());
         return view("listBooks", [ "Books" => Book::all(), 
                                  "RatedBooks" => DB::table('user_rate_books')
                                  ->join('books', 'user_rate_books.book_id', '=', 'books.id')
@@ -151,7 +152,6 @@ class BooksController extends Controller
 
     public function search(Request $request)
     {
-        // dd($request);
         $searchBy = $request->search_param;
         $searchText = $request->search_text;
         if($searchText === "")
@@ -161,6 +161,7 @@ class BooksController extends Controller
             ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
         }
         else {
+            
             $books = Book::where($searchBy, 'like', '%'.$searchText.'%')->get();
             return view("listBooks", ["data"=> $books, 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
             ->join('books', 'user_rate_books.book_id', '=', 'books.id')
@@ -172,13 +173,21 @@ class BooksController extends Controller
         $request->validate([
             'category'=>'required',
         ]);
+        // $category = Category::where('id', $request->category)->first();
+       
         if($request->category==="all"){
-            return redirect("/Book");
+            Session::put("filtered",Session::get('data'));
+            return view("listBooks",['data'=>Session::get('data'),'categories' => Category::all(),"RatedBooks" => DB::table('user_rate_books')
+            ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+            ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
 
-        }      
-        $category = Category::where('id', $request->category)->first();
-        // Session::put("data",$category->books);
-        return view("listBooks",['data'=>$category->books,'categories' => Category::all(),"RatedBooks" => DB::table('user_rate_books')
+        }     
+        $GLOBALS['category']=$request->category;
+        $filtered = Session::get("data")->filter(function ($value, $key) {
+           return $value->category_id == $GLOBALS['category'];
+        });     
+        Session::put("filtered",$filtered);
+        return view("listBooks",['data'=>$filtered,'categories' => Category::all(),"RatedBooks" => DB::table('user_rate_books')
         ->join('books', 'user_rate_books.book_id', '=', 'books.id')
         ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
     }
@@ -219,6 +228,8 @@ class BooksController extends Controller
     }
 
     public function favourites(){
+        Session::put("data",Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at',null)-> get());
+        Session::put("filtered",Session::get('data'));
         return view("listBooks", [ "Books" => Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at',null)->get(), 
                                  "RatedBooks" => DB::table('user_rate_books')
                                  ->join('books', 'user_rate_books.book_id', '=', 'books.id')
