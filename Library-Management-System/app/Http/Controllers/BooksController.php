@@ -273,25 +273,22 @@ class BooksController extends Controller
     {
         $profits = DB::table('user_lease_books')
         ->join('books', 'user_lease_books.book_id', '=', 'books.id')
-        ->selectRaw('books.price * books.profit_precentage * 0.01 *  user_lease_books.num_of_days as total_profit')
-        ->get()->pluck('total_profit')->toArray();
-
-        $dates = DB::table('user_lease_books')->selectRaw('(created_at)')
-        ->get()->pluck('created_at')->toArray();
-
+        ->selectRaw('SUM(books.price * books.profit_precentage * 0.01 *  user_lease_books.num_of_days) as total_profit , Date(user_lease_books.created_at) as day')
+        ->groupBy(DB::raw('DATE(user_lease_books.created_at)'))
+        ->get();
 
         $chart = new ProfitChart;
 
-        $chart->labels($dates);
+        $chart->labels($profits->pluck('day')->toArray());
 
-        $chart->dataset('Profit per day', 'line', $profits)->options([
+        $chart->dataset('Profit per day', 'line', $profits->pluck('total_profit')->toArray())
+            ->options([
 
             'fill' => 'true',
 
             'borderColor' => '#51C1C0'
 
         ]);
-
 
         return view('chart', compact('chart'));
 
