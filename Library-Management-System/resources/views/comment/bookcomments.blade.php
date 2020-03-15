@@ -20,7 +20,7 @@
     
     <div>
         <div class="container d-flex p-2 bd-highlight justify-content-left align-items-strech">
-            <img src="{{ $book->cover }}" alt="{{ $book->title}}" style="border:solid; width:200px; margin-left:9.5rem; margin-right:8rem;">
+            <img src="/storage/images/{{ $book->cover }}" alt="{{ $book->title}}" style="border:solid; width:200px; margin-left:9.5rem; margin-right:8rem;">
             <div>
                 <h1>{{ $book->title }}</h1>
                 <h2>{{ $book->description }}</h2>
@@ -43,7 +43,7 @@
             <div class="container d-flex p-2 bd-highlight flex-wrap justify-content-around align-items-stretch">
             @foreach ($relatedBooks as $book)
                 <div class="card align-self-stretch" style="width: 18rem;">
-                    <img src="storage/images/{{$book->cover}}" class="card-img-top" alt="{{$book->description}}">
+                    <img src="/storage/images/{{ $book->cover }}" style="height:300px;" class="card-img-top" alt="{{$book->description}}">
                     
                     <div class="card-body">
                         <h3 class="card-title">{{$book->title}}</h3>
