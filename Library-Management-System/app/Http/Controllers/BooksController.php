@@ -173,16 +173,18 @@ class BooksController extends Controller
             ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
         }
         else {
-            $books = Session::get('filtered')->filter(function ($value, $key) {         
-                if($GLOBALS['searchText']==="author")  {     
-                    if (strpos($value->author,$GLOBALS['searchText']) !== false) {
+            $books = Session::get('filtered')->filter(function ($value, $key) {
+                if($GLOBALS['searchBy'] === "author")  {     
+                    if (stripos($value->author,$GLOBALS['searchText']) !== false) {
                         return $value;
                     }
                 }
                 else 
-                    if (strpos($value->title,$GLOBALS['searchText']) !== false) {
+                {
+                    if (stripos($value->title,$GLOBALS['searchText']) !== false) {
                         return $value;
                     }
+                }
             });
             
             // $books = Book::where($searchBy, 'like', '%'.$searchText.'%')->get();
