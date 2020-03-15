@@ -76,7 +76,7 @@ class LoginController extends Controller
             return redirect('admin/users');
         }
         else {
-            return redirect("profile/".$user->id."/edit");
+            return redirect("/Book");
         }
    }
 
