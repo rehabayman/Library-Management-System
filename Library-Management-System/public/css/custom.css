@@ -1,0 +1,56 @@
+/*********************************************************************************
+
+	Template Name: Boighor Bookshop Responsive Bootstrap4 Template  
+	Description: Template description
+	Version: 1.0
+	Note: This is custom css. All custom styles (user styles) declare here.
+
+**********************************************************************************/
+.head{
+	background-color: rgb(223, 219, 219);
+}
+.searchsec{
+	margin:auto;
+	margin-top: 9rem;
+	float: left;
+}
+.btn-primary:hover{
+	background-color: rgb(235, 152, 94);
+	border-color: darkorange;
+	color: black;
+	font-weight: bold;
+}
+.btn-primary{
+	background-color: darkgray;
+	border-color: gray;
+	color:rgb(37, 37, 37);
+	font-weight: bold;
+}
+.sort{
+	padding:2rem;
+	font-weight: 500;
+	font-size: larger;
+	color:black;
+}
+
+.sort a:hover{
+	background-color: black;
+}
+.filter{
+	margin-top: 1.5rem;
+}
+.optionsmenu{
+	text-align: center;
+	float: left;
+	margin-left: 5rem;
+}
+.user{
+	color:wheat;
+}
+.user:hover{
+	color:rgb(230, 106, 57)
+}
+.card{
+	background-color:rgb(223, 219, 219);
+	border: groove black 1px;
+}
