@@ -16,8 +16,13 @@ class DateSortController extends Controller
      */
     public function index()
     {   
+        if(Session::get('filtered')){
+            $data=Session::get('filtered');
+        }
+        else
         $data=Session::get('data');
-        
+
+        Session::put('data',$data->sortByDesc("publish_date"));
         return view("listBooks", ["data"=> $data->sortByDesc("publish_date"), 
                                     'categories' => Category::all(),
                                     "RatedBooks" => DB::table('user_rate_books')

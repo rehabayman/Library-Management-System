@@ -44,6 +44,11 @@
             </div>
 
             <div class="form-group">
+                <label>Profit's Percentage</label>
+                <input type="number" class="form-control" placeholder="Enter Profit Percentage" min="0.2" max="0.7" step="0.01" name="profit_precentage">
+            </div>
+
+            <div class="form-group">
                 <label>Number of copies</label>
                 <input type="number" class="form-control" placeholder="Enter #copies" min="0" name="num_of_copies">
             </div>

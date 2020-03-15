@@ -23,15 +23,15 @@ class BooksController extends Controller
      */
     public function index()
     {
-        //
-        // Session::put("data",Book::all());
-        return view("listBooks", [
-            "Books" => Book::all(),
-            "RatedBooks" => DB::table('user_rate_books')
-                ->join('books', 'user_rate_books.book_id', '=', 'books.id')
-                ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),
-            "data" => Book::all(), 'categories' => Category::all()
-        ]);
+        
+        Session::put("data",Book::all());
+        Session::put("filtered",Book::all());
+        return view("listBooks", [ "Books" => Book::all(), 
+                                 "RatedBooks" => DB::table('user_rate_books')
+                                 ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+                                 ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),
+                                 "data"=> Book::all(),'categories' => Category::all()]);
+       
     }
 
     /**
@@ -62,7 +62,8 @@ class BooksController extends Controller
             'num_of_copies' => 'required',
             'category' => 'required',
             'cover' => 'required|file|mimes:png,jpeg,jpg',
-            'publish_date' => 'required|date'
+            'publish_date' => 'required|date',
+            'profit_precentage' => 'required|numeric|between:0,0.70'
         ]);
 
         $book = new Book();
@@ -71,6 +72,7 @@ class BooksController extends Controller
         $book->author = $request->author;
         $book->description = $request->description;
         $book->price = $request->price;
+        $book->profit_precentage = $request->profit_precentage;
         $book->num_of_copies = $request->num_of_copies;
         $book->category_id = $request->category;
         $book->publish_date = $request->publish_date;
@@ -124,7 +126,8 @@ class BooksController extends Controller
             'num_of_copies' => 'required',
             'category' => 'required',
             'cover' => 'required|file|mimes:png,jpeg,jpg',
-            'publish_date' => 'required|date'
+            'publish_date' => 'required|date',
+            'profit_precentage' => 'required|numeric|between:0,0.70'
         ]);
 
         $book = Book::find($id);
@@ -133,6 +136,7 @@ class BooksController extends Controller
         $book->author = $request->author;
         $book->description = $request->description;
         $book->price = $request->price;
+        $book->profit_precentage = $request->profit_precentage;
         $book->num_of_copies = $request->num_of_copies;
         $book->category_id = $request->category;
         $book->publish_date = $request->publish_date;
@@ -159,18 +163,34 @@ class BooksController extends Controller
 
     public function search(Request $request)
     {
-        // dd($request);
-        $searchBy = $request->search_param;
-        $searchText = $request->search_text;
-        if ($searchText === "") {
-            return view("listBooks", ["data" => Book::all(), 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
-                ->join('books', 'user_rate_books.book_id', '=', 'books.id')
-                ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
-        } else {
-            $books = Book::where($searchBy, 'like', '%' . $searchText . '%')->get();
-            return view("listBooks", ["data" => $books, 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
-                ->join('books', 'user_rate_books.book_id', '=', 'books.id')
-                ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
+        $GLOBALS['searchBy'] = $request->search_param;
+        $GLOBALS['searchText'] = $request->search_text;
+        if($GLOBALS['searchText'] === "")
+        {
+           
+            return view("listBooks", ["data"=> Book::all(), 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
+            ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+            ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
+        }
+        else {
+            $books = Session::get('filtered')->filter(function ($value, $key) {         
+                if($GLOBALS['searchText']==="author")  {     
+                    if (strpos($value->author,$GLOBALS['searchText']) !== false) {
+                        return $value;
+                    }
+                }
+                else 
+                    if (strpos($value->title,$GLOBALS['searchText']) !== false) {
+                        return $value;
+                    }
+            });
+            
+            // $books = Book::where($searchBy, 'like', '%'.$searchText.'%')->get();
+            Session::put("data",$books);
+            Session::put("filtered",$books);
+            return view("listBooks", ["data"=> $books, 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
+            ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+            ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
         }
     }
 
@@ -179,14 +199,23 @@ class BooksController extends Controller
         $request->validate([
             'category' => 'required',
         ]);
-        if ($request->category === "all") {
-            return redirect("/Book");
-        }
-        $category = Category::where('id', $request->category)->first();
-        // Session::put("data",$category->books);
-        return view("listBooks", ['data' => $category->books, 'categories' => Category::all(), "RatedBooks" => DB::table('user_rate_books')
+        // $category = Category::where('id', $request->category)->first();
+       
+        if($request->category==="all"){
+            Session::put("filtered",Session::get('data'));
+            return view("listBooks",['data'=>Session::get('data'),'categories' => Category::all(),"RatedBooks" => DB::table('user_rate_books')
             ->join('books', 'user_rate_books.book_id', '=', 'books.id')
             ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
+
+        }     
+        $GLOBALS['category']=$request->category;
+        $filtered = Session::get("data")->filter(function ($value, $key) {
+           return $value->category_id == $GLOBALS['category'];
+        });     
+        Session::put("filtered",$filtered);
+        return view("listBooks",['data'=>$filtered,'categories' => Category::all(),"RatedBooks" => DB::table('user_rate_books')
+        ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+        ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
     }
     public function leaseBook(Request $request)
     {
@@ -227,17 +256,17 @@ class BooksController extends Controller
         return redirect()->back()->with('message', 'You have unfavourited the book');
     }
 
-    public function favourites()
-    {
-        return view("listBooks", [
-            "Books" => Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at', null)->get(),
-            "RatedBooks" => DB::table('user_rate_books')
-                ->join('books', 'user_rate_books.book_id', '=', 'books.id')
-                ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),
-            "data" => Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at', null)->get(), 'categories' => Category::all()
-        ]);
-    }
+    public function favourites(){
+        Session::put("data",Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at',null)-> get());
+        Session::put("filtered",Session::get('data'));
+        return view("listBooks", [ "Books" => Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at',null)->get(), 
+                                 "RatedBooks" => DB::table('user_rate_books')
+                                 ->join('books', 'user_rate_books.book_id', '=', 'books.id')
+                                 ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get(),
+                                 "data"=> Auth::user()->favoriteBooks()->where('user_favorite_books.deleted_at',null)-> get(),'categories' => Category::all()]);
+       
 
+    }
     public function profitChart()
     {
         $profits = DB::table('user_lease_books')
@@ -246,6 +275,13 @@ class BooksController extends Controller
         ->groupBy(DB::raw('DATE(user_lease_books.created_at)'))
         ->get();
 
+<<<<<<< HEAD
+=======
+        $dates = DB::table('user_lease_books')->selectRaw('(created_at)')
+        ->get()->pluck('created_at')->toArray();
+
+
+>>>>>>> 2539a543fb12d586d49d437f431643d15c499844
         $chart = new ProfitChart;
 
         $chart->labels($profits->pluck('day')->toArray());
@@ -260,5 +296,6 @@ class BooksController extends Controller
         ]);
 
         return view('chart', compact('chart'));
+
     }
 }
