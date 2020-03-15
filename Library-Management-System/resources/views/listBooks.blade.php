@@ -101,21 +101,23 @@
                         <p class="card-tex">Number Of Copies: {{$book->num_of_copies}}</p>
                     @endif
                 
-                    @if(!App\UserFavoriteBooks::favourited($book))
-                    {!! Form::open(['route' => ['Book.favourite'] , 'method' => 'POST']) !!}
-                        {{ Form::hidden('book_id', $book->id) }}
-                        <button type="submit" class='btn btn-naked'>
-                        <i class="fa fa-heart-o fa-3x" style="color:red" aria-hidden='true'></i>
-                        </button>
-                    {!! Form::close() !!}
-                    @else
-                    {!! Form::open(['route' => ['Book.unfavourite'] , 'method' => 'POST']) !!}
-                        {{ Form::hidden('book_id', $book->id) }}
-                        <button type="submit" class='btn btn-naked'>
-                        <i class="fa fa-heart fa-3x not-favourited" style="color:red" aria-hidden='true'></i>
-                        </button>
-                    {!! Form::close() !!}
-                    @endif
+                    @cannot('isAdmin', App\User::class)               
+                        @if(!App\UserFavoriteBooks::favourited($book))
+                        {!! Form::open(['route' => ['Book.favourite'] , 'method' => 'POST']) !!}
+                            {{ Form::hidden('book_id', $book->id) }}
+                            <button type="submit" class='btn btn-naked'>
+                            <i class="fa fa-heart-o fa-3x" style="color:red" aria-hidden='true'></i>
+                            </button>
+                        {!! Form::close() !!}
+                        @else
+                        {!! Form::open(['route' => ['Book.unfavourite'] , 'method' => 'POST']) !!}
+                            {{ Form::hidden('book_id', $book->id) }}
+                            <button type="submit" class='btn btn-naked'>
+                            <i class="fa fa-heart fa-3x not-favourited" style="color:red" aria-hidden='true'></i>
+                            </button>
+                        {!! Form::close() !!}
+                        @endif
+                    @endcan
 
             @cannot('isAdmin', App\User::class)   
             <!-- Button trigger modal -->
