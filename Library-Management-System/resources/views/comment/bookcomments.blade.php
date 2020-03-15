@@ -20,7 +20,7 @@
     
     <div>
         <div class="container d-flex p-2 bd-highlight justify-content-left align-items-strech">
-            <img src="{{ $book->cover }}" alt="{{ $book->title}}" style="border:solid; width:200px; margin-left:9.5rem; margin-right:8rem;">
+            <img src="/storage/images/{{$book->cover}}" alt="{{ $book->title}}" style="border:solid; width:200px; margin-left:9.5rem; margin-right:8rem;">
             <div>
                 <h1>{{ $book->title }}</h1>
                 <h2>{{ $book->description }}</h2>
