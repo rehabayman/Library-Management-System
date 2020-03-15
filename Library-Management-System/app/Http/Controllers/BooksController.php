@@ -275,13 +275,6 @@ class BooksController extends Controller
         ->groupBy(DB::raw('DATE(user_lease_books.created_at)'))
         ->get();
 
-<<<<<<< HEAD
-=======
-        $dates = DB::table('user_lease_books')->selectRaw('(created_at)')
-        ->get()->pluck('created_at')->toArray();
-
-
->>>>>>> 2539a543fb12d586d49d437f431643d15c499844
         $chart = new ProfitChart;
 
         $chart->labels($profits->pluck('day')->toArray());
