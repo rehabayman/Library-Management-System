@@ -273,7 +273,7 @@ class BooksController extends Controller
     {
         $profits = DB::table('user_lease_books')
         ->join('books', 'user_lease_books.book_id', '=', 'books.id')
-        ->selectRaw('SUM(books.price * books.profit_precentage * 0.01 *  user_lease_books.num_of_days) as total_profit , Date(user_lease_books.created_at) as day')
+        ->selectRaw('SUM(books.price * books.profit_precentage * user_lease_books.num_of_days) as total_profit , Date(user_lease_books.created_at) as day')
         ->groupBy(DB::raw('DATE(user_lease_books.created_at)'))
         ->get();
 
