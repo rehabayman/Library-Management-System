@@ -15,17 +15,21 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"> 
 
 	<!-- Stylesheets -->
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/plugins.css">
-    <link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="\css/bootstrap.min.css">
+	<link rel="stylesheet" href="\css/plugins.css">
+    <link rel="stylesheet" href="\style.css">
 
 	<!-- Cusom css -->
-   <link rel="stylesheet" href="css/custom.css">
+   <link rel="stylesheet" href="\css/custom.css">
 
 	<!-- Modernizer js -->
-	<script src="js/vendor/modernizr-3.5.0.min.js"></script>
+	<script src="\js/vendor/modernizr-3.5.0.min.js"></script>
 </head>
-<body style="background-image: url('images/Library\ copy.jpg');background-repeat:no-repeat;background-size:cover;">
+<body style="background: url('\images/Library\ copy.jpg')no-repeat center center fixed; 
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;">
     <div class="wrapper" id="wrapper">
 		<!-- Header -->
 		<header id="wn__header" class="header__area header__absolute sticky__header head">
@@ -34,7 +38,7 @@
 					<div class="col-md-6 col-sm-6 col-6 col-lg-2">
 						<div class="logo">
 							<a href="{{ url('/Book') }}">
-								<img src="images/logo/logo.png" alt="logo images">
+								<img src="\images/logo/logo.png" alt="logo images">
 							</a>
 						</div>
                     </div>
@@ -47,7 +51,7 @@
                                     <li class="drop with--one--item"><a href="{{ route('register') }}">{{ __('Register') }}</a></li>                             
                                     @endif
                                     @else 
-                                    <li class="drop"><a class="user" href="#">{{ Auth::user()->name }}</a>
+                                    <li class="drop"><a class="user" href="#">{{ Auth::user()->name }}<img width="15" height="15"  src="images/Artboard_3-512.png"></a>
                                         <div class="megamenu mega03">
                                             @can('isAdmin',App\User::class)
                                             <ul class="item item03">
