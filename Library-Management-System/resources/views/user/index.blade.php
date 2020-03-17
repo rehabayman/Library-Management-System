@@ -15,11 +15,17 @@ background-size: cover;" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
                     <div class="card">
                         <div class="card-header">{{ __('Edit profile') }}</div>
                         @if ($errors->any())
-                        
+                    <div class="alert alert-danger">
+                        <ul>
                             @foreach ($errors->all() as $error)
-                            <h4>{{$error}}</h4>
+                                <li>{{ $error }}</li>
                             @endforeach
-                        @endif
+                        </ul>
+                    </div>
+                @endif
+                @if (Session::has("message"))
+                    <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get("message") }}</p>
+                @endif
                         @if (session('message'))
                         <div class="alert alert-success" role="alert">
                             {{ session('message') }}
