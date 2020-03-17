@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html style="background: url('/images/Library\ copy.jpg')no-repeat center center fixed; 
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
 @extends('layouts.app')
 
@@ -112,7 +116,7 @@
 
                             <div class="col-md-1">
                                 <input type="text" name="active" value="{{ $user->active }}" hidden>
-                                <input type="checkbox" class="form-control @error('role') is-invalid @enderror" id="role" name="role" @if ($user->role === "admin") checked=checked @endif>
+                                <input type="checkbox" class="form-control @error('role') is-invalid @enderror" id="role" style="margin-top:10px;" name="role" @if ($user->role === "admin") checked=checked @endif>
                             </div>
                         </div>
 

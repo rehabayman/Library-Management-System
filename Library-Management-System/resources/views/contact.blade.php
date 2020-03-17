@@ -22,8 +22,16 @@
 
             </div>
         </div>
-        <div class="welcomeDiv" style="text-align:center;margin-top:220px;">
-            <h1>Welcome to our Library Website</h1>
+        <div  style="text-align:left;margin-top:100px; margin-left:20px;">
+            <h2>About Us</h2>
+            <h3>Open Source Applications team includes the following names:</h3>
+            <ul style="margin-left:60px; font-size:larger;display: list-item;list-style-type: circle;">
+                <li>Mohamed Adham</li>
+                <li>Mohamed Tarek</li>
+                <li>Mohamed Zakaria</li>
+                <li>Rehab Ayman</li>
+                <li>Nouran M.Yehia</li>                
+            </ul>
         </div>
     </body>
 </html>
