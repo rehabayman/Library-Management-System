@@ -55,7 +55,7 @@ background-size: cover;">
                                         <div class="megamenu mega03">
                                             @can('isAdmin',App\User::class)
                                             <ul class="item item03">
-                                                <li class="title">Admin Layout</li>
+                                                <li class="title">Admin</li>
                                                 <li><a href="{{ route('admin.users.index') }}">User Management</a></li>
                                                 <li><a href="{{ route('category.index') }}">Categories</a></li>
                                                 <li><a href="{{ route('Book.index') }}">Book Management</a></li>
@@ -71,7 +71,7 @@ background-size: cover;">
                                             @endcan
                                             @cannot('isAdmin', App\User::class)
                                             <ul class="item item03">
-                                                <li class="title">User Layout</li>
+                                                <li class="title">User</li>
                                                 <li><a href="/favourites">Favourite Books</a></li>
                                                 <li><a href="{{ route('profile.edit', Auth::user()) }}">Edit Profile</a></li>
                                                 <li> <a href="{{ route('logout') }}" onclick="event.preventDefault();
