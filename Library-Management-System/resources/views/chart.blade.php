@@ -3,7 +3,7 @@
 @section('content')
    <div>
 
-        <div style="width: 60%;margin: 0 auto;">
+        <div style="width: 60%;margin: 0 auto; background:antiquewhite; ">
 
             {!! $chart->container() !!}
 

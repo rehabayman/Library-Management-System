@@ -1,6 +1,21 @@
-@extends('layouts.app')
-@section("content")
-<div class="container">
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="background: url('/images/Library\ copy.jpg')no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;" >
+
+<head>
+    @extends('layouts.app')
+    @section('content')
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center" style="margin-top:25px;">
+            <div class="col-md-8">
+                <div class="card">
+                <div class="card-header">Edit {{$book->title}} Book</div>
+                    <div class="card-body" style="padding-buttom:100px;">  
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -40,6 +55,11 @@
             </div>
 
             <div class="form-group">
+                <label>Profit's Percentage</label>
+                <input type="number" class="form-control" value="{{$book->profit_precentage}}" placeholder="Enter Profit Percentage" min="0.2" max="0.7" step="0.01" name="profit_precentage">
+            </div>
+
+            <div class="form-group">
                 <label>Publish Date</label>
                 <input type="date" class="form-control" placeholder="Enter Date" name="publish_date" value="{{ $book->publish_date }}">
             </div>
@@ -51,7 +71,7 @@
 
             <div class="form-group">
                 <label>Book's Category</label>
-                <select name="category">
+                <select name="category" class="custom-select">
                     @foreach ($categories as $item)
                         @if($item->id == $book->id)
                             <option value="{{$item->id}}" selected>{{$item->category_name}}</option>

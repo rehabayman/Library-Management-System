@@ -74,9 +74,10 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
        // $this->authorize('update',$categories);
+        $request->validate(['category'=>'required|unique:categories,category_name,'.$category->id.',id,deleted_at,NULL|alpha|regex:/^[a-zA-Z]+$/']);
         $category->category_name=$request->category;
         $category->save();
-        return redirect()->route('category.index');
+        return redirect()->route('category.index')->with('message','Category has been edited successfully');;
     }
 
     /**

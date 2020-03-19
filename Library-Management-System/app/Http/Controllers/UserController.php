@@ -84,6 +84,7 @@ class UserController extends Controller
             'New_Password'=>'nullable|required_with:password|confirmed|min:6',
             'email'=>['required', Rule::unique('users')->ignore($profile)],
             'profile_pic'=>'nullable|file|mimes:jpeg,png,jpg,svg|max:5048',
+            'phone' => 'nullable|starts_with:011,012,010,015|digits:11',
         ]);
         if(!empty($request->profile_pic)){
             $image = $request->file('profile_pic');
@@ -95,7 +96,7 @@ class UserController extends Controller
         $profile->profile_pic=$new_name;
         $profile->save();
         }
-        return back()->with('message', 'You edited the profile successfully');
+        return back()->with('message', 'You edited your profile successfully');
      
         // $user->name  = $request->name;
         // $user->username=$request->username;

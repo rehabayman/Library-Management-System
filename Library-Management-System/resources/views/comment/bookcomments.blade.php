@@ -1,6 +1,15 @@
-@extends('layouts.app')
-@section("content")
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="background: url('/images/Library\ copy.jpg')no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;" >
 
+<head>
+    @extends('layouts.app')
+    @section('content')
+</head>
+<body>
     <div class="container">
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -20,7 +29,7 @@
     
     <div>
         <div class="container d-flex p-2 bd-highlight justify-content-left align-items-strech">
-            <img src="/storage/images/{{$book->cover}}" alt="{{ $book->title}}" style="border:solid; width:200px; margin-left:9.5rem; margin-right:8rem;">
+            <img src="/storage/images/{{ $book->cover }}" alt="{{ $book->title}}" style="border:solid; width:200px; margin-left:9.5rem; margin-right:8rem;">
             <div>
                 <h1>{{ $book->title }}</h1>
                 <h2>{{ $book->description }}</h2>
@@ -33,17 +42,17 @@
             <form action="{{ route('comment.store') }}" method="post">
                 @csrf
                 <input type="text" name="book_id" value="{{ $book->id }}" hidden>
-                <textarea name="comment" cols="100" rows="5" style="resize:none;"></textarea><br>
+                <textarea name="comment" cols="100" rows="5" style="resize:none;" class="form-control"></textarea><br>
                 <button type="submit" class="btn btn-primary" style="float:right;">Comment</button>
             </form>
         </div>
 
         <div class="container">
-            <h1>Related Books</h1>
+            <h5>Related Books</h5>
             <div class="container d-flex p-2 bd-highlight flex-wrap justify-content-around align-items-stretch">
             @foreach ($relatedBooks as $book)
                 <div class="card align-self-stretch" style="width: 18rem;">
-                    <img src="storage/images/{{$book->cover}}" class="card-img-top" alt="{{$book->description}}">
+                    <img src="/storage/images/{{ $book->cover }}" style="height:300px;" class="card-img-top" alt="{{$book->description}}">
                     
                     <div class="card-body">
                         <h3 class="card-title">{{$book->title}}</h3>
@@ -68,7 +77,7 @@
         </div>
 
         <div class="container">
-            <h1>Comments</h1>
+            <h5>Comments</h5>
                 @if(count($comments) > 0)
                     @foreach ($comments as $comment)
                     <div class="container" style="margin:2rem;">
@@ -88,3 +97,5 @@
         </div>
     </div>
 @endsection
+</body>
+</html>

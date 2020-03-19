@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return redirect('/home');
+    return view('welcome');
 });
 
 
@@ -58,3 +58,4 @@ Route::put('admin/{user}/users', 'Admin\UsersController@handleActiveStatus')->na
 Route::resource('category', 'CategoryController');
 Route::resource('date', 'DateSortController');
 Route::resource('rate', 'RateSortController');
+

@@ -62,7 +62,8 @@ class BooksController extends Controller
             'num_of_copies' => 'required',
             'category' => 'required',
             'cover' => 'required|file|mimes:png,jpeg,jpg',
-            'publish_date' => 'required|date'
+            'publish_date' => 'required|date',
+            'profit_precentage' => 'required|numeric|between:0,0.70'
         ]);
 
         $book = new Book();
@@ -71,6 +72,7 @@ class BooksController extends Controller
         $book->author = $request->author;
         $book->description = $request->description;
         $book->price = $request->price;
+        $book->profit_precentage = $request->profit_precentage;
         $book->num_of_copies = $request->num_of_copies;
         $book->category_id = $request->category;
         $book->publish_date = $request->publish_date;
@@ -124,7 +126,8 @@ class BooksController extends Controller
             'num_of_copies' => 'required',
             'category' => 'required',
             'cover' => 'required|file|mimes:png,jpeg,jpg',
-            'publish_date' => 'required|date'
+            'publish_date' => 'required|date',
+            'profit_precentage' => 'required|numeric|between:0,0.70'
         ]);
 
         $book = Book::find($id);
@@ -133,6 +136,7 @@ class BooksController extends Controller
         $book->author = $request->author;
         $book->description = $request->description;
         $book->price = $request->price;
+        $book->profit_precentage = $request->profit_precentage;
         $book->num_of_copies = $request->num_of_copies;
         $book->category_id = $request->category;
         $book->publish_date = $request->publish_date;
@@ -169,16 +173,18 @@ class BooksController extends Controller
             ->join('users', 'user_rate_books.user_id', '=', 'users.id')->get()]);
         }
         else {
-            $books = Session::get('filtered')->filter(function ($value, $key) {         
-                if($GLOBALS['searchText']==="author")  {     
-                    if (strpos($value->author,$GLOBALS['searchText']) !== false) {
+            $books = Session::get('filtered')->filter(function ($value, $key) {
+                if($GLOBALS['searchBy'] === "author")  {     
+                    if (stripos($value->author,$GLOBALS['searchText']) !== false) {
                         return $value;
                     }
                 }
                 else 
-                    if (strpos($value->title,$GLOBALS['searchText']) !== false) {
+                {
+                    if (stripos($value->title,$GLOBALS['searchText']) !== false) {
                         return $value;
                     }
+                }
             });
             
             // $books = Book::where($searchBy, 'like', '%'.$searchText.'%')->get();
@@ -267,25 +273,22 @@ class BooksController extends Controller
     {
         $profits = DB::table('user_lease_books')
         ->join('books', 'user_lease_books.book_id', '=', 'books.id')
-        ->selectRaw('books.price * books.profit_precentage * 0.01 *  user_lease_books.num_of_days as total_profit')
-        ->get()->pluck('total_profit')->toArray();
-
-        $dates = DB::table('user_lease_books')->selectRaw('(created_at)')
-        ->get()->pluck('created_at')->toArray();
-
+        ->selectRaw('SUM(books.price * books.profit_precentage * user_lease_books.num_of_days) as total_profit , Date(user_lease_books.created_at) as day')
+        ->groupBy(DB::raw('DATE(user_lease_books.created_at)'))
+        ->get();
 
         $chart = new ProfitChart;
 
-        $chart->labels($dates);
+        $chart->labels($profits->pluck('day')->toArray());
 
-        $chart->dataset('Profit per day', 'line', $profits)->options([
+        $chart->dataset('Profit per day', 'line', $profits->pluck('total_profit')->toArray())
+            ->options([
 
             'fill' => 'true',
 
             'borderColor' => '#51C1C0'
 
         ]);
-
 
         return view('chart', compact('chart'));
 

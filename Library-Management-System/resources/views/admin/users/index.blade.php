@@ -1,12 +1,23 @@
+<!DOCTYPE html>
+<html style="background: url('/images/Library\ copy.jpg')no-repeat center center fixed; 
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+
 @extends('layouts.app')
 
 @section('content')
+    </head>
+    <body>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Users</div>
                 <div class="card-body">
+                    <div class="table-content wnro__table table-responsive">
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
@@ -27,7 +38,11 @@
                                     <td><img src="{{ URL::to('/') }}/images/{{ $user->profile_pic }}" style="height:120px;"></td>
                                     <td>{{$user->username}}</td>
                                     <td>{{$user->role}}</td>
-                                    <td> @if($user->active == 1) active @else inactive @endif</td>
+                                    <td> @if($user->active == 1) <span class="active">active</span> <style>.active{
+                                        color:green;
+                                    } </style> @else <span class="inactive">inactive</span> <style>.inactive{
+                                        color:red;
+                                    } </style> @endif</td>
                                     <td>
                                         <a href="{{ route('admin.users.edit', $user->id) }}"><button type="button" class="btn btn-primary float-left">Edit</button></a>
                                         <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="float-left" style="margin-left:0.3rem;">
@@ -47,9 +62,12 @@
                             @endforeach
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+</body>
+</html>
