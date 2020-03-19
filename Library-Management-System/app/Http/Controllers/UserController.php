@@ -96,7 +96,7 @@ class UserController extends Controller
         $profile->profile_pic=$new_name;
         $profile->save();
         }
-        return back()->with('message', 'You edited the profile successfully');
+        return back()->with('message', 'You edited your profile successfully');
      
         // $user->name  = $request->name;
         // $user->username=$request->username;

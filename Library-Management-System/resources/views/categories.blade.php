@@ -24,17 +24,19 @@
                                     </div>
                                 @endif
                     </div>
-                    {{-- <div class="form-group row">   --}}
-                    {!! Form::open(['route'=>['category.store'],'method'=>'post']) !!}
-                    <div class="col-md-6" style="display:inline">
-                    {!! Form::text('category_name',null,['class'=>'form-control']) !!}
+
+                    <div class="form-group row" style="display:flex; flex-direction:row; justify-content: center"> 
+                        {!! Form::open(['route'=>['category.store'],'method'=>'post']) !!}
+                        <div style="display:inline-block; float:left; width: 60%;">
+                        {!! Form::text('category_name',null,['class'=>'form-control']) !!}
+                        </div>
+                        <div style="display:inline-block; float: right;">
+                        {!! Form::submit('Add Category',['class'=>'btn btn-primary']) !!}
+                            
+                        </div>
+                        {!! Form::close() !!}
                     </div>
-                    <div style="float: right;">
-                    {!! Form::submit('Add Category',['class'=>'btn btn-primary']) !!}
-                        
-                    </div>
-                    {!! Form::close() !!}
-                    </div>
+
                     <div class="table-content wnro__table table-responsive" >
                     <table class="table" style="width:40rem;margin:auto;">
                         <thead class="thead-dark">
@@ -49,11 +51,17 @@
                                 <tr>
                                     {{-- <!-- <th scope="row">{{$user->id}}</th> --> --}}
                                     <td><h6>{{ $category->category_name }}</h6></td>
-                                    <td> <a href="{{ route('category.edit',[$category->id]) }}"><button type="button" class="btn btn-primary" style="float:right;">Edit</button></a>                
-                                        {!! Form::open(['route'=>['category.destroy',$category->id],'method'=>'delete']) !!}
-                                        {!! Form::submit('delete',['class'=>'btn btn-danger']); !!}
-                                        {!! Form::close() !!}
-                                        {{-- @endif --}}</td>
+                                    <td> 
+                                        <a href="{{ route('category.edit',[$category->id]) }}">
+                                            <button type="button" class="btn btn-primary" style="display:inline-block; float:right; margin-left:0.5rem; margin-right:3rem;">Edit</button>
+                                        </a>                
+                                        <div>
+                                            {!! Form::open(['route'=>['category.destroy',$category->id],'method'=>'delete']) !!}
+                                            {!! Form::submit('Delete',['class'=>'btn btn-danger', 'style' => 'padding: 5px']); !!}
+                                            {!! Form::close() !!}
+                                            {{-- @endif --}}
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

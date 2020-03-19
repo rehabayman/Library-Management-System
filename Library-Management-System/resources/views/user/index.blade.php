@@ -15,22 +15,22 @@ background-size: cover;" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
                     <div class="card">
                         <div class="card-header">{{ __('Edit profile') }}</div>
                         @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
                 @if (Session::has("message"))
-                    <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get("message") }}</p>
+                    <p class="alert {{ Session::get('alert-class', 'alert-success') }}">{{ Session::get("message") }}</p>
                 @endif
-                        @if (session('message'))
+                        <!-- @if (session('message'))
                         <div class="alert alert-success" role="alert">
                             {{ session('message') }}
                         </div>
-                    @endif
+                    @endif -->
                         <div class="card-body">                          
                             <form action="{{url('profile')."/".Auth::user()->id}}" method="post" enctype="multipart/form-data"
                                 >
