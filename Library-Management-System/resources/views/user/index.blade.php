@@ -57,7 +57,7 @@ background-size: cover;" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
                                 <div class="form-group row">                          
                                 {{ Form::label('profile_pic',null,['class'=>'col-md-4 col-form-label text-md-right']) }}
                                 <div class="col-md-6">
-                                {{ Form::file('profile_pic') }}
+                                    {{ Form::file('profile_pic',['class'=> 'form-control-file']) }}
                                 </div> 
                                 </div>
                                 <div class="form-group row">                          

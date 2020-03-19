@@ -58,3 +58,4 @@ Route::put('admin/{user}/users', 'Admin\UsersController@handleActiveStatus')->na
 Route::resource('category', 'CategoryController');
 Route::resource('date', 'DateSortController');
 Route::resource('rate', 'RateSortController');
+

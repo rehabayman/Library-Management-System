@@ -72,6 +72,7 @@ background-size: cover;">
                                             @cannot('isAdmin', App\User::class)
                                             <ul class="item item03">
                                                 <li class="title">User</li>
+                                                <li><a href="{{ url('/Book') }}">Book List</a></li>
                                                 <li><a href="/favourites">Favourite Books</a></li>
                                                 <li><a href="{{ route('profile.edit', Auth::user()) }}">Edit Profile</a></li>
                                                 <li> <a href="{{ route('logout') }}" onclick="event.preventDefault();
@@ -117,7 +118,7 @@ background-size: cover;">
 										<li><a href="#"><i class="bi bi-youtube"></i></a></li>
 									</ul>
 									<ul class="mainmenu d-flex justify-content-center">
-                                        <li><a href="#">About Us</a></li>
+                                    <li><a href='\about.html'>About Us</a></li>
                                         <li><a href="#">Contact Us</a></li>
 									</ul>
 								</div>
