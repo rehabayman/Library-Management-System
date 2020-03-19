@@ -23,7 +23,8 @@
    <link rel="stylesheet" href="\css/custom.css">
 
 	<!-- Modernizer js -->
-	<script src="\js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="\js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src='{{ asset('js/app.js')}}' defer> </script>
 </head>
 <body style="background: url('\images/Library\ copy.jpg')no-repeat center center fixed; 
 -webkit-background-size: cover;
