@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\UserLeaseBooks;
 use App\Charts\ProfitChart;
+use DateTime;
 use App\UserFavoriteBooks;
 use Session;
+
+use function PHPSTORM_META\map;
 
 class BooksController extends Controller
 {
@@ -273,15 +276,24 @@ class BooksController extends Controller
     {
         $profits = DB::table('user_lease_books')
         ->join('books', 'user_lease_books.book_id', '=', 'books.id')
-        ->selectRaw('SUM(books.price * books.profit_precentage * user_lease_books.num_of_days) as total_profit , Date(user_lease_books.created_at) as day')
-        ->groupBy(DB::raw('DATE(user_lease_books.created_at)'))
+        ->selectRaw('SUM(books.price * books.profit_precentage * user_lease_books.num_of_days) as total_profit , WEEK(user_lease_books.created_at) as week')
+        ->groupBy(DB::raw('WEEK(user_lease_books.created_at)'))
         ->get();
 
         $chart = new ProfitChart;
 
-        $chart->labels($profits->pluck('day')->toArray());
+        $label = $profits->pluck('week')->map(function($week_no){
+            $dateTime = new DateTime();
+            $dateTime->setISODate(date('y'), $week_no+1);
+            $result['start_date'] = $dateTime->format('d-M-Y');
+            $dateTime->modify('+6 days');
+            $result['end_date'] = $dateTime->format('d-M-Y');
+            $date_range = $result['start_date'].' - '.$result['end_date'];
+            return $date_range;
+        });
+        $chart->labels($label->toArray());
 
-        $chart->dataset('Profit per day', 'line', $profits->pluck('total_profit')->toArray())
+        $chart->dataset('Profit per week', 'line', $profits->pluck('total_profit')->toArray())
             ->options([
 
             'fill' => 'true',
