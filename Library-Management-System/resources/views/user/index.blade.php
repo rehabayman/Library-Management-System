@@ -1,55 +1,90 @@
-
+<!doctype html>
+<html style="background: url('/images/Library\ copy.jpg')no-repeat center center fixed; 
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
 @extends('layouts.app')
-
 @section('content')
-<html>
-    <body>
+</head>
+<body>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">{{ __('Edit profile') }}</div>
                         @if ($errors->any())
-                        
-                            @foreach ($errors->all() as $error)
-                            <h4>{{$error}}</h4>
-                            @endforeach
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                         @endif
-                        @if (session('message'))
+                @if (Session::has("message"))
+                    <p class="alert {{ Session::get('alert-class', 'alert-success') }}">{{ Session::get("message") }}</p>
+                @endif
+                        <!-- @if (session('message'))
                         <div class="alert alert-success" role="alert">
                             {{ session('message') }}
                         </div>
-                    @endif
+                    @endif -->
                         <div class="card-body">                          
                             <form action="{{url('profile')."/".Auth::user()->id}}" method="post" enctype="multipart/form-data"
                                 >
                                 @csrf
-                                {{ method_field('put')}}   
-                                <br>                         
-                                {{ Form::label('username') }}
-                                {{ Form::text('username',$profile->username) }} 
-                                <br>
-                                {{ Form::label('phone', 'phone') }}
-                                {{ Form::text('phone') }} 
-                                <br>
-                                {{ Form::label('name', 'name') }}
-                                {{ Form::text('name',$profile->name) }} 
-                                <br>
-                                {{ Form::label('profile_pic') }}
-                                {{ Form::file('profile_pic') }} 
-                                <br>
-                                {{ Form::label('email', "email") }}
-                                {{ Form::email('email',$profile->email) }} 
-                                <br>
-                                {{ Form::label('New_password',null) }}
-                                {{ Form::password('New_Password',null) }} 
-                                <br>
-                                {{ Form::label('New_Password_confirmation') }}
-                                
-                                {{ Form::password('New_Password_confirmation') }} 
-                                <br>
-                            {{ Form::submit('submit')}}
+                                {{ method_field('put')}}
+                            <div class="form-group row">                          
+                                {{ Form::label('username',null,['class'=>'col-md-4 col-form-label text-md-right']) }}
+                                <div class="col-md-6">
+                                {{ Form::text('username',$profile->username,['class'=>'form-control']) }}
+                                </div>
+                            </div>
+                                <div class="form-group row">                          
+                                {{ Form::label('phone', 'phone',['class'=>'col-md-4 col-form-label text-md-right']) }}
+                                <div class="col-md-6">
+                                {{ Form::text('phone',$profile->phone,['class'=>'form-control']) }}
+                                </div>
+                            </div>
+                                <div class="form-group row">                          
+                                {{ Form::label('name', 'name',['class'=>'col-md-4 col-form-label text-md-right']) }}
+                                <div class="col-md-6">
+                                {{ Form::text('name',$profile->name,['class'=>'form-control']) }} 
+                                </div>
+                            </div>
+                                <div class="form-group row">                          
+                                {{ Form::label('profile_pic',null,['class'=>'col-md-4 col-form-label text-md-right']) }}
+                                <div class="col-md-6">
+                                    {{ Form::file('profile_pic',['class'=> 'form-control-file']) }}
+                                </div> 
+                                </div>
+                                <div class="form-group row">                          
+                                {{ Form::label('email', "email",['class'=>'col-md-4 col-form-label text-md-right']) }}
+                                <div class="col-md-6">
+                                {{ Form::email('email',$profile->email,['class'=>'form-control']) }} 
+                                </div>
+                            </div>
+                                <div class="form-group row">                          
+                                {{ Form::label('New_password',null,['class'=>'col-md-4 col-form-label text-md-right']) }}
+                                <div class="col-md-6">
+                                {{ Form::password('New_Password',['class'=>'form-control']) }} 
+                                </div>    
+                            </div>
+                                <div class="form-group row">                          
+                                {{ Form::label('New_Password_confirmation',null,['class'=>'col-md-4 col-form-label text-md-right']) }}
+                                <div class="col-md-6">
+                                {{ Form::password('New_Password_confirmation',['class'=>'form-control']) }} 
+                                </div>    
+                            </div>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                            {{ Form::submit('submit',['class'=>'btn btn-primary'])}}
+                            </div>
+                            </div>
                             {{ Form::close() }}
+                                
                             </form>
                         </div>
                     </div>
@@ -57,8 +92,7 @@
             </div>
         </div>
         
-    </body>
-</html>
 @endsection
 
-
+    </body>
+</html>

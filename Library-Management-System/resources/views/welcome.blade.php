@@ -22,5 +22,8 @@
 
             </div>
         </div>
+        <div class="welcomeDiv" style="text-align:center;margin-top:220px;">
+            <h1>Welcome to our Library Website</h1>
+        </div>
     </body>
 </html>

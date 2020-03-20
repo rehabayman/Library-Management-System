@@ -1,6 +1,15 @@
+<!DOCTYPE html>
+<html style="background: url('/images/Library\ copy.jpg')no-repeat center center fixed; 
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
 @extends('layouts.app')
 
 @section('content')
+    </head>
+<body>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -92,7 +101,7 @@
                             <label for="profile_pic" class="col-md-4 col-form-label text-md-right">{{ __('Profile Picture') }}</label>
 
                             <div class="col-md-6">
-                                <input id="profile_pic" type="file" class="@error('profile_pic') is-invalid @enderror" name="profile_pic" value="{{ $user->profile_pic }}">
+                                <input id="profile_pic" type="file" class="form-control-file @error('profile_pic') is-invalid @enderror" name="profile_pic" value="{{ $user->profile_pic }}">
 
                                 @error('profile_pic')
                                     <span class="invalid-feedback" role="alert">
@@ -107,7 +116,7 @@
 
                             <div class="col-md-1">
                                 <input type="text" name="active" value="{{ $user->active }}" hidden>
-                                <input type="checkbox" class="form-control @error('role') is-invalid @enderror" id="role" name="role" @if ($user->role === "admin") checked=checked @endif>
+                                <input type="checkbox" class="form-control @error('role') is-invalid @enderror" id="role" style="margin-top:10px;" name="role" @if ($user->role === "admin") checked=checked @endif>
                             </div>
                         </div>
 
@@ -123,3 +132,5 @@
     </div>
 </div>
 @endsection
+</body>
+</html>
