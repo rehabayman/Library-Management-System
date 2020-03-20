@@ -17,16 +17,20 @@ It is a Web Application for automating the book leasing and management process o
 4. Create an empty database with **the same name found in .env file** [*Initially it's named laravel - you can leave it as it is*], then run the following:
 5. In the .env file fill in the `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` options to match the credentials of the database you just created. This will allow us to run migrations in the next step.
 6. Run the following:
-```bash
-	php artisan migrate
-```
+	```bash
+		php artisan migrate
+	```
+7. Run the following to make storage link for books' covers
+	```bash
+		php artisan storage:link
+	```
 
 ## Usage
 
 Run the following command to launch the app
-```bash
-php artisan serve
-```
+	```bash
+		php artisan serve
+	```
 
 ## Admin Features 
 
@@ -41,9 +45,9 @@ php artisan serve
 1. Update his Profile Data.
 2. Lease Books.
 3. View Books.
-	a. Order by: rate / latest.
-	b. Search by: title / author.
-	c. Filter by Category 
+	- Order by: rate / latest.
+	- Search by: title / author.
+	- Filter by Category 
 4. Rate Books.
 5. Add / Remove Books from his Favorites.
 6. Add / Delete Comments on Books.

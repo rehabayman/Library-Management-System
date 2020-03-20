@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Iatstuti\Database\Support\CascadeSoftDeletes;
 
 class Category extends Model  
 {
-    use SoftDeletes;
+    use SoftDeletes, CascadeSoftDeletes;
     
 
     /**
@@ -16,6 +17,9 @@ class Category extends Model
      * @var string
      */
     protected $table = 'categories';
+    
+    protected $cascadeDeletes = ['books'];
+    
     public function books()
     {
         return $this->hasMany('App\Book');    
@@ -26,6 +30,7 @@ class Category extends Model
      * @var array
      */
     protected $fillable = ['category_name', 'created_at', 'updated_at', 'deleted_at'];
+
 
     /**
      * The attributes excluded from the model's JSON form.
