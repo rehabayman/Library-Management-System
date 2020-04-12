@@ -14,7 +14,7 @@ It is a Web Application for automating the book leasing and management process o
 		cp .env.example .env
 		php artisan key:generate
 	```
-4. Create an empty database with **the same name found in .env file** [*Initially it's named laravel - you can leave it as it is*], then run the following:
+4. Create an empty database with **the same name found in .env file** [*Initially it's named laravel - you can leave it as it is*].
 5. In the .env file fill in the `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` options to match the credentials of the database you just created. This will allow us to run migrations in the next step.
 6. Run the following:
 	```bash
