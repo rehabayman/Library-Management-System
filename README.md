@@ -52,6 +52,10 @@ Run the following command to launch the app
 5. Add / Remove Books from his Favorites.
 6. Add / Delete Comments on Books.
 
+## Built With
+
+[Laravel](https://laravel.com/)
+
 
 ## Authors
 
