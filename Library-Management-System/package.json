@@ -26,6 +26,6 @@
     "dependencies": {
         "chart.js": "^2.9.4",
         "font-awesome": "^4.7.0",
-        "minimist": "^1.2.5"
+        "minimist": "^1.2.6"
     }
 }
